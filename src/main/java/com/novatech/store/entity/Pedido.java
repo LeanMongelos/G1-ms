@@ -1,0 +1,81 @@
+package com.novatech.store.entity;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+// Esta clase representa la tabla "Pedido".
+// Un pedido es una compra que hace un usuario.
+@Entity
+@Table(name = "Pedido")
+public class Pedido {
+
+    // Identificador unico del pedido.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pedido")
+    private Integer idPedido;
+
+    // El usuario que hizo el pedido.
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
+    // Fecha y hora del pedido.
+    @Column(name = "fecha")
+    private LocalDateTime fecha;
+
+    // Estado del pedido, por ejemplo "PENDIENTE", "PAGADO", "ENVIADO".
+    @Column(name = "estado")
+    private String estado;
+
+    // Monto total a pagar por el pedido.
+    @Column(name = "total", precision = 12, scale = 2)
+    private BigDecimal total;
+
+    // Constructor vacio para JPA.
+    public Pedido() {
+    }
+
+    // Getters y setters.
+
+    public Integer getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(Integer idPedido) {
+        this.idPedido = idPedido;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+}
