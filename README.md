@@ -47,7 +47,6 @@ La base de datos, las tablas y los datos de ejemplo **se crean solos** al arranc
 11. Cómo reiniciarlo (cuando cambia una entidad)
 12. Deploy con Docker
 13. Cómo está organizado el repo (ramas y módulos)
-14. Cómo defender este desarrollo (preguntas frecuentes)
 
 ---
 
@@ -386,43 +385,3 @@ El backend se construyó **por módulos**, cada uno en su rama `feature/*` e int
 | Documentación | `feature/documentacion` |
 
 `main` contiene todos los módulos integrados y compila (`./mvnw -DskipTests clean compile`).
-
----
-
-## 14. Cómo defender este desarrollo (preguntas frecuentes)
-
-**¿Por qué Spring Boot con arquitectura en capas?**
-Separa responsabilidades: el controller maneja HTTP, el service la lógica y el
-repository el acceso a datos. Es el estándar de la industria y facilita testear y mantener.
-
-**¿Por qué JPA/Hibernate y no SQL a mano?**
-Spring Data JPA genera el CRUD automáticamente desde las interfaces `Repository` y
-mapea las entidades a tablas. Escribimos menos código y menos propenso a errores.
-
-**¿Cómo se protegen las contraseñas?**
-Nunca se guardan en texto plano: se hashean con **BCrypt**. Además el campo nunca se
-devuelve en las respuestas (`WRITE_ONLY`) y el login responde con un mensaje genérico
-para no filtrar si el email existe.
-
-**¿Por qué no Spring Security completo / JWT?**
-Por el alcance del proyecto: necesitábamos un login funcional sin bloquear los
-endpoints del resto del equipo. Usamos solo la librería de cifrado (BCrypt) y un login
-propio. La estructura permite migrar a JWT/Security más adelante.
-
-**¿Cómo guardan las fotos de los productos?**
-Como texto base64 en la columna `imagen` (`LONGTEXT`). Simplifica el despliegue (no hay
-carpeta de archivos ni servidor de estáticos) y la imagen viaja en el JSON. Para
-catálogos muy grandes, lo profesional sería almacenamiento de objetos (S3); para este
-proyecto, base64 es suficiente y robusto.
-
-**¿Los pagos son reales?**
-Están **simulados** pero se **registran** en la base con su método, referencia y estado.
-Dejamos el punto exacto donde se enchufaría Mercado Pago real (con credenciales).
-
-**¿Por qué CORS con `*`?**
-Para poder compartir la demo por un túnel público sin reconfigurar nada. En producción
-se restringe al dominio real del frontend con la variable `CORS_ORIGINS`.
-
-**¿Por qué `ddl-auto=update` y no migraciones (Flyway/Liquibase)?**
-Para el alcance del proyecto, dejar que Hibernate cree/actualice el esquema es lo más
-ágil. En un sistema en producción se usarían migraciones versionadas.
