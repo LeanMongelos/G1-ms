@@ -1,6 +1,10 @@
 package com.novatech.store.entity;
 
 import jakarta.persistence.*;
+// Anotaciones de Bean Validation (Jakarta) para validar los datos de entrada.
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 // BigDecimal se usa para guardar plata. Es mejor que double porque no pierde decimales.
 import java.math.BigDecimal;
 
@@ -15,7 +19,8 @@ public class Producto {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    // Nombre del producto.
+    // Nombre del producto. Es obligatorio y no puede ir vacio.
+    @NotBlank(message = "El nombre del producto es obligatorio.")
     @Column(name = "nombre")
     private String nombre;
 
@@ -25,10 +30,16 @@ public class Producto {
 
     // Precio del producto. precision = 12 y scale = 2 significa hasta 12 numeros en total
     // y 2 despues de la coma (por ejemplo 1234567890.99).
+    // Es obligatorio y no puede ser negativo.
+    @NotNull(message = "El precio es obligatorio.")
+    @PositiveOrZero(message = "El precio no puede ser negativo.")
     @Column(name = "precio", precision = 12, scale = 2)
     private BigDecimal precio;
 
     // Cantidad de unidades que tenemos en stock.
+    // Es obligatorio y no puede ser negativo.
+    @NotNull(message = "El stock es obligatorio.")
+    @PositiveOrZero(message = "El stock no puede ser negativo.")
     @Column(name = "stock")
     private Integer stock;
 

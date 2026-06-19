@@ -2,6 +2,7 @@ package com.novatech.store.controller;
 
 import com.novatech.store.entity.Producto;
 import com.novatech.store.service.ProductoService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class ProductoController {
 
     // POST /productos -> crea un producto.
     @PostMapping
-    public ResponseEntity<Producto> crear(@RequestBody Producto producto) {
+    public ResponseEntity<Producto> crear(@Valid @RequestBody Producto producto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(producto));
     }
 

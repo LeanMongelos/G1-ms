@@ -2,6 +2,7 @@ package com.novatech.store.controller;
 
 import com.novatech.store.entity.Envio;
 import com.novatech.store.service.EnvioService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class EnvioController {
 
     // POST /envios -> crea un envio.
     @PostMapping
-    public ResponseEntity<Envio> crear(@RequestBody Envio envio) {
+    public ResponseEntity<Envio> crear(@Valid @RequestBody Envio envio) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(envio));
     }
 

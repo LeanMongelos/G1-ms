@@ -2,6 +2,7 @@ package com.novatech.store.controller;
 
 import com.novatech.store.entity.Pedido;
 import com.novatech.store.service.PedidoService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class PedidoController {
 
     // POST /pedidos -> crea un pedido.
     @PostMapping
-    public ResponseEntity<Pedido> crear(@RequestBody Pedido pedido) {
+    public ResponseEntity<Pedido> crear(@Valid @RequestBody Pedido pedido) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(pedido));
     }
 

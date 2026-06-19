@@ -3,6 +3,10 @@ package com.novatech.store.entity;
 // Importamos las herramientas de JPA. JPA es lo que nos permite que una clase de Java
 // se transforme en una tabla de la base de datos sin tener que escribir SQL a mano.
 import jakarta.persistence.*;
+// Anotaciones de Bean Validation (Jakarta) para validar los datos de entrada.
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 // @JsonProperty nos deja controlar como se convierte este objeto a JSON.
 import com.fasterxml.jackson.annotation.JsonProperty;
 // LocalDateTime sirve para guardar una fecha junto con la hora (ej: 2026-06-17 12:30).
@@ -23,11 +27,14 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
-    // Nombre y apellido del usuario.
+    // Nombre y apellido del usuario. Es obligatorio y no puede ir vacio.
+    @NotBlank(message = "El nombre es obligatorio.")
     @Column(name = "nombre")
     private String nombre;
 
-    // Correo electronico del usuario.
+    // Correo electronico del usuario. Es obligatorio y debe tener formato de email valido.
+    @NotBlank(message = "El email es obligatorio.")
+    @Email(message = "El email no tiene un formato valido.")
     @Column(name = "email")
     private String email;
 
@@ -35,6 +42,11 @@ public class Usuario {
     // @JsonProperty(access = WRITE_ONLY) significa: este campo se puede RECIBIR desde el
     // frontend (cuando alguien se registra o cambia la clave), pero NUNCA se ENVIA en las
     // respuestas JSON. Asi, aunque pidamos GET /usuarios, la contrasena jamas se filtra.
+    // Es obligatoria al crear el usuario (no puede ir vacia) y debe tener al menos 6 caracteres.
+    // OJO: esto se valida solo en el POST (crear). El PUT de edicion NO usa @Valid,
+    // asi que sigue permitiendo editar sin mandar la contrasena (se conserva la anterior).
+    @NotBlank(message = "La contrasena es obligatoria.")
+    @Size(min = 6, message = "La contrasena debe tener al menos 6 caracteres.")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "contrasena")
     private String contrasena;
