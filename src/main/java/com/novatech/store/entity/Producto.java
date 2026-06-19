@@ -43,6 +43,13 @@ public class Producto {
     @Column(name = "proveedor")
     private String proveedor;
 
+    // Foto del producto guardada como texto en formato "base64" (un data URL,
+    // por ejemplo: data:image/png;base64,AAAA...). Lo mandamos asi desde el
+    // frontend para no tener que manejar archivos sueltos en el servidor.
+    // columnDefinition = "LONGTEXT" -> permite guardar textos muy largos (la imagen pesa).
+    @Column(name = "imagen", columnDefinition = "LONGTEXT")
+    private String imagen;
+
     // Constructor vacio para JPA.
     public Producto() {
     }
@@ -103,5 +110,13 @@ public class Producto {
 
     public void setProveedor(String proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }
