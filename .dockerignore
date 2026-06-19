@@ -1,0 +1,7 @@
+# Archivos que NO queremos copiar dentro de la imagen de Docker
+# (asi la imagen queda mas chica y la construccion mas rapida).
+target/
+*.md
+.git/
+.gitignore
+NOTA-EQUIPO.md
