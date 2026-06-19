@@ -53,6 +53,7 @@ public class ProductoService {
         producto.setStock(datos.getStock());
         producto.setCategoria(datos.getCategoria());
         producto.setProveedor(datos.getProveedor());
+        producto.setImagen(datos.getImagen());
         return repository.save(producto);
     }
 
