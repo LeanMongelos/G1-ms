@@ -2,6 +2,7 @@ package com.novatech.store.controller;
 
 import com.novatech.store.entity.Categoria;
 import com.novatech.store.service.CategoriaService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class CategoriaController {
     // @RequestBody convierte el JSON que mandan en un objeto Categoria.
     // Devolvemos el codigo 201 (CREATED) que significa "se creo correctamente".
     @PostMapping
-    public ResponseEntity<Categoria> crear(@RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> crear(@Valid @RequestBody Categoria categoria) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(categoria));
     }
 

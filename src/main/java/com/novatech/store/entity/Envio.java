@@ -1,6 +1,8 @@
 package com.novatech.store.entity;
 
 import jakarta.persistence.*;
+// Anotacion de Bean Validation (Jakarta) para validar los datos de entrada.
+import jakarta.validation.constraints.NotBlank;
 
 // Esta clase representa la tabla "Envio".
 // Guarda los datos del envio de un pedido.
@@ -19,7 +21,8 @@ public class Envio {
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
 
-    // Direccion a donde se manda el pedido.
+    // Direccion a donde se manda el pedido. Es obligatoria y no puede ir vacia.
+    @NotBlank(message = "La direccion de envio es obligatoria.")
     @Column(name = "direccion_envio")
     private String direccionEnvio;
 

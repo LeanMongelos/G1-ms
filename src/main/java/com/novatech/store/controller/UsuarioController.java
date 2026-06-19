@@ -2,6 +2,7 @@ package com.novatech.store.controller;
 
 import com.novatech.store.entity.Usuario;
 import com.novatech.store.service.UsuarioService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,11 @@ public class UsuarioController {
     }
 
     // POST /usuarios -> crea un usuario.
+    // OJO: ponemos @Valid solo en el POST (crear). En el PUT (actualizar) NO lo
+    // ponemos a proposito, porque al editar permitimos NO mandar la contrasena
+    // (se conserva la que ya tenia) y @NotBlank la marcaria como obligatoria.
     @PostMapping
-    public ResponseEntity<Usuario> crear(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> crear(@Valid @RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(usuario));
     }
 

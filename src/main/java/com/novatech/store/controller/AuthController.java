@@ -5,6 +5,7 @@ import com.novatech.store.dto.RegistroRequest;
 import com.novatech.store.dto.UsuarioResponse;
 import com.novatech.store.entity.Usuario;
 import com.novatech.store.repository.UsuarioRepository;
+import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,9 @@ public class AuthController {
     //  Body esperado: { "nombre": "...", "email": "...", "contrasena": "..." }
     // ============================================================
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegistroRequest datos) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegistroRequest datos) {
         // 1) Validacion basica: que vengan los datos minimos.
+        //    (El formato de email y el largo de contrasena ya los valida @Valid antes de entrar aca.)
         if (datos.email() == null || datos.email().isBlank()
                 || datos.contrasena() == null || datos.contrasena().isBlank()
                 || datos.nombre() == null || datos.nombre().isBlank()) {
@@ -70,7 +72,7 @@ public class AuthController {
     //  Body esperado: { "email": "...", "contrasena": "..." }
     // ============================================================
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest datos) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest datos) {
         // 1) Buscamos el usuario por su email.
         var usuarioOpt = usuarioRepository.findByEmail(datos.email() == null ? "" : datos.email());
 

@@ -1,6 +1,9 @@
 package com.novatech.store.entity;
 
 import jakarta.persistence.*;
+// Anotaciones de Bean Validation (Jakarta) para validar los datos de entrada.
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -29,7 +32,9 @@ public class Pedido {
     @Column(name = "estado")
     private String estado;
 
-    // Monto total a pagar por el pedido.
+    // Monto total a pagar por el pedido. Es obligatorio y debe ser mayor a 0.
+    @NotNull(message = "El total es obligatorio.")
+    @Positive(message = "El total debe ser mayor a 0.")
     @Column(name = "total", precision = 12, scale = 2)
     private BigDecimal total;
 

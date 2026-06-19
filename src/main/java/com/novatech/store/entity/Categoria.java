@@ -2,6 +2,8 @@ package com.novatech.store.entity;
 
 // Importamos las anotaciones de JPA para convertir esta clase en una tabla.
 import jakarta.persistence.*;
+// Anotacion de Bean Validation (Jakarta) para validar los datos de entrada.
+import jakarta.validation.constraints.NotBlank;
 
 // @Entity = esta clase es una tabla de la base de datos.
 @Entity
@@ -16,7 +18,8 @@ public class Categoria {
     @Column(name = "id_categoria")
     private Integer idCategoria;
 
-    // Nombre de la categoria, por ejemplo "Notebooks".
+    // Nombre de la categoria, por ejemplo "Notebooks". Es obligatorio y no puede ir vacio.
+    @NotBlank(message = "El nombre de la categoria es obligatorio.")
     @Column(name = "nombre")
     private String nombre;
 
