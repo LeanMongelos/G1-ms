@@ -1,5 +1,6 @@
 package com.novatech.store.controller;
 
+import com.novatech.store.dto.EnvioDetalleResponse;
 import com.novatech.store.entity.Envio;
 import com.novatech.store.service.EnvioService;
 import jakarta.validation.Valid;
@@ -29,6 +30,12 @@ public class EnvioController {
     @GetMapping("/{id}")
     public Envio obtener(@PathVariable Integer id) {
         return service.obtener(id);
+    }
+
+    // GET /envios/5/detalle -> envio con pedido, cliente, factura y lineas.
+    @GetMapping("/{id}/detalle")
+    public EnvioDetalleResponse obtenerDetalle(@PathVariable Integer id) {
+        return service.obtenerDetalle(id);
     }
 
     // POST /envios -> crea un envio.

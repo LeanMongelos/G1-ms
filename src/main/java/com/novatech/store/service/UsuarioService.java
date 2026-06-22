@@ -61,6 +61,17 @@ public class UsuarioService {
         return repository.save(usuario);
     }
 
+    // Actualiza perfil propio (sin cambiar rol).
+    public Usuario actualizarPerfil(Integer id, com.novatech.store.dto.ActualizarPerfilRequest datos) {
+        Usuario usuario = obtener(id);
+        usuario.setNombre(datos.nombre());
+        usuario.setEmail(datos.email());
+        if (datos.contrasena() != null && !datos.contrasena().isBlank()) {
+            usuario.setContrasena(passwordEncoder.encode(datos.contrasena()));
+        }
+        return repository.save(usuario);
+    }
+
     // Borra un usuario por su id.
     public void eliminar(Integer id) {
         if (!repository.existsById(id)) {

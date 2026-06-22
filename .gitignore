@@ -36,3 +36,10 @@ build/
 NOTA-EQUIPO.md
 DEFENSA.md
 
+### Secretos (nunca commitear) ###
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+

@@ -1,8 +1,10 @@
 package com.novatech.store.service;
 
 import com.novatech.store.entity.Categoria;
+import com.novatech.store.exception.ReglaNegocioException;
 import com.novatech.store.exception.ResourceNotFoundException;
 import com.novatech.store.repository.CategoriaRepository;
+import com.novatech.store.validation.NombreCategoriaValidator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,8 @@ public class CategoriaService {
     // Crea una categoria nueva.
     // Ponemos el id en null para asegurarnos de que MySQL genere uno nuevo.
     public Categoria crear(Categoria categoria) {
+        normalizar(categoria);
+        validarNombreUnico(categoria.getNombre(), null);
         categoria.setIdCategoria(null);
         return repository.save(categoria);
     }
@@ -45,6 +49,8 @@ public class CategoriaService {
         Categoria categoria = obtener(id);
         categoria.setNombre(datos.getNombre());
         categoria.setDescripcion(datos.getDescripcion());
+        normalizar(categoria);
+        validarNombreUnico(categoria.getNombre(), id);
         return repository.save(categoria);
     }
 
@@ -55,5 +61,26 @@ public class CategoriaService {
             throw new ResourceNotFoundException("Categoria no encontrada: " + id);
         }
         repository.deleteById(id);
+    }
+
+    // Recorta espacios del nombre y descripcion antes de guardar.
+    private void normalizar(Categoria categoria) {
+        if (categoria.getNombre() != null) {
+            categoria.setNombre(categoria.getNombre().trim());
+        }
+        if (categoria.getDescripcion() != null) {
+            categoria.setDescripcion(categoria.getDescripcion().trim());
+        }
+        // Reglas de nombre coherente (bloquea basura tipo "4dfs---0.0.00.df0sdf").
+        NombreCategoriaValidator.validar(categoria.getNombre());
+    }
+
+    // Evita dos categorias con el mismo nombre (sin importar mayusculas).
+    private void validarNombreUnico(String nombre, Integer idExcluir) {
+        repository.findByNombreIgnoreCase(nombre).ifPresent(existente -> {
+            if (idExcluir == null || !existente.getIdCategoria().equals(idExcluir)) {
+                throw new ReglaNegocioException("Ya existe una categoria con ese nombre.");
+            }
+        });
     }
 }

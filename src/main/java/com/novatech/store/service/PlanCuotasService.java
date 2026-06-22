@@ -10,6 +10,7 @@ import com.novatech.store.repository.PerfilClienteRepository;
 import com.novatech.store.repository.PlanCuotasRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Logica de negocio para los planes de cuotas.
 @Service
@@ -19,13 +20,16 @@ public class PlanCuotasService {
     // Necesitamos pedidos y perfiles de cliente para validar que el plan corresponda.
     private final PedidoRepository pedidoRepository;
     private final PerfilClienteRepository perfilClienteRepository;
+    private final CuotaService cuotaService;
 
     public PlanCuotasService(PlanCuotasRepository repository,
                              PedidoRepository pedidoRepository,
-                             PerfilClienteRepository perfilClienteRepository) {
+                             PerfilClienteRepository perfilClienteRepository,
+                             CuotaService cuotaService) {
         this.repository = repository;
         this.pedidoRepository = pedidoRepository;
         this.perfilClienteRepository = perfilClienteRepository;
+        this.cuotaService = cuotaService;
     }
 
     // Trae todos los planes de cuotas.
@@ -40,6 +44,7 @@ public class PlanCuotasService {
     }
 
     // Crea un plan nuevo. Si no viene estado, lo dejamos "ACTIVO".
+    @Transactional
     public PlanCuotas crear(PlanCuotas plan) {
         plan.setIdPlan(null);
         if (plan.getEstado() == null || plan.getEstado().isBlank()) {
@@ -75,7 +80,19 @@ public class PlanCuotasService {
         // Usamos las entidades reales de la base.
         plan.setPedido(pedido);
         plan.setCliente(perfil);
-        return repository.save(plan);
+
+        if (plan.getCantidadCuotas() == null || plan.getCantidadCuotas() < 1
+                || plan.getCantidadCuotas() > 24) {
+            throw new ReglaNegocioException("Cantidad de cuotas inválida (1-24).");
+        }
+        if (plan.getInteres() != null && (plan.getInteres().compareTo(java.math.BigDecimal.ZERO) < 0
+                || plan.getInteres().compareTo(new java.math.BigDecimal("100")) > 0)) {
+            throw new ReglaNegocioException("Interés inválido (0-100%).");
+        }
+
+        PlanCuotas guardado = repository.save(plan);
+        cuotaService.generarCuotasParaPlan(guardado);
+        return guardado;
     }
 
     // Actualiza un plan existente.

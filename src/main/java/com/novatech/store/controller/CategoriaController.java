@@ -44,7 +44,7 @@ public class CategoriaController {
 
     // PUT /categorias/5 -> actualiza la categoria con id 5.
     @PutMapping("/{id}")
-    public Categoria actualizar(@PathVariable Integer id, @RequestBody Categoria categoria) {
+    public Categoria actualizar(@PathVariable Integer id, @Valid @RequestBody Categoria categoria) {
         return service.actualizar(id, categoria);
     }
 

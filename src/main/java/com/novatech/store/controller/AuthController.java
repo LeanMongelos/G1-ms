@@ -1,44 +1,51 @@
 package com.novatech.store.controller;
 
+import com.novatech.store.dto.ActualizarPerfilRequest;
 import com.novatech.store.dto.LoginRequest;
 import com.novatech.store.dto.RegistroRequest;
 import com.novatech.store.dto.UsuarioResponse;
 import com.novatech.store.entity.Usuario;
 import com.novatech.store.repository.UsuarioRepository;
+import com.novatech.store.security.JwtAuthFilter;
+import com.novatech.store.security.JwtService;
+import com.novatech.store.security.SecurityUtils;
+import com.novatech.store.service.UsuarioService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-// Controller de autenticacion (login simple).
-// Todas las rutas empiezan con /auth.
-// OJO: esto NO usa spring-boot-starter-security, asi que no bloquea ninguna ruta.
-// Es un login "casero": validamos email + contrasena a mano y devolvemos los datos del usuario.
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    // Repositorio para buscar/guardar usuarios en la base de datos.
     private final UsuarioRepository usuarioRepository;
-    // Herramienta de BCrypt para encriptar y comparar contrasenas.
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final boolean cookieSecure;
+    private final UsuarioService usuarioService;
 
-    // Spring nos pasa solo estas dos herramientas (inyeccion de dependencias).
-    public AuthController(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {
+    public AuthController(
+            UsuarioRepository usuarioRepository,
+            BCryptPasswordEncoder passwordEncoder,
+            JwtService jwtService,
+            UsuarioService usuarioService,
+            @Value("${app.security.cookie-secure:false}") boolean cookieSecure) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.usuarioService = usuarioService;
+        this.cookieSecure = cookieSecure;
     }
 
-    // ============================================================
-    //  POST /auth/register  -> registrar un cliente nuevo
-    //  Body esperado: { "nombre": "...", "email": "...", "contrasena": "..." }
-    // ============================================================
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegistroRequest datos) {
-        // 1) Validacion basica: que vengan los datos minimos.
-        //    (El formato de email y el largo de contrasena ya los valida @Valid antes de entrar aca.)
         if (datos.email() == null || datos.email().isBlank()
                 || datos.contrasena() == null || datos.contrasena().isBlank()
                 || datos.nombre() == null || datos.nombre().isBlank()) {
@@ -46,47 +53,35 @@ public class AuthController {
                     .body(Map.of("message", "Faltan datos: nombre, email y contrasena son obligatorios."));
         }
 
-        // 2) Si ya existe un usuario con ese email, no dejamos registrar de nuevo.
-        //    Devolvemos 409 (CONFLICT) con un mensaje claro.
         if (usuarioRepository.findByEmail(datos.email()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("message", "Ya existe una cuenta con ese email."));
         }
 
-        // 3) Armamos el usuario nuevo con rol CLIENTE y la contrasena HASHEADA con BCrypt.
         Usuario nuevo = new Usuario();
         nuevo.setNombre(datos.nombre());
         nuevo.setEmail(datos.email());
-        nuevo.setContrasena(passwordEncoder.encode(datos.contrasena())); // se guarda encriptada
-        nuevo.setRol("CLIENTE"); // todo el que se registra desde la tienda es cliente
+        nuevo.setContrasena(passwordEncoder.encode(datos.contrasena()));
+        nuevo.setRol("CLIENTE");
         nuevo.setFechaRegistro(java.time.LocalDateTime.now());
 
         Usuario guardado = usuarioRepository.save(nuevo);
-
-        // 4) Respondemos 201 (CREATED) con los datos del usuario SIN la contrasena.
-        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioResponse.desde(guardado));
+        UsuarioResponse response = UsuarioResponse.desde(guardado);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.SET_COOKIE, crearCookieSesion(response).toString())
+                .body(response);
     }
 
-    // ============================================================
-    //  POST /auth/login  -> iniciar sesion
-    //  Body esperado: { "email": "...", "contrasena": "..." }
-    // ============================================================
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest datos) {
-        // 1) Buscamos el usuario por su email.
         var usuarioOpt = usuarioRepository.findByEmail(datos.email() == null ? "" : datos.email());
 
-        // 2) Si no existe el email, NO decimos "el email no existe" (eso ayudaria a un atacante).
-        //    Respondemos 401 con un mensaje generico.
         if (usuarioOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", "Email o contrasena incorrectos."));
         }
 
         Usuario usuario = usuarioOpt.get();
-
-        // 3) Comparamos la contrasena escrita contra el hash guardado.
-        //    passwordEncoder.matches() hace todo el trabajo de BCrypt por nosotros.
         boolean coincide = passwordEncoder.matches(
                 datos.contrasena() == null ? "" : datos.contrasena(),
                 usuario.getContrasena());
@@ -96,7 +91,55 @@ public class AuthController {
                     .body(Map.of("message", "Email o contrasena incorrectos."));
         }
 
-        // 4) Login correcto: devolvemos los datos del usuario (sin la contrasena).
-        return ResponseEntity.ok(UsuarioResponse.desde(usuario));
+        UsuarioResponse response = UsuarioResponse.desde(usuario);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, crearCookieSesion(response).toString())
+                .body(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioResponse> me() {
+        UsuarioResponse u = SecurityUtils.usuarioActual();
+        if (u == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(u);
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<UsuarioResponse> actualizarPerfil(@Valid @RequestBody ActualizarPerfilRequest datos) {
+        UsuarioResponse sesion = SecurityUtils.requerirAutenticado();
+        Usuario actualizado = usuarioService.actualizarPerfil(sesion.idUsuario(), datos);
+        UsuarioResponse response = UsuarioResponse.desde(actualizado);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, crearCookieSesion(response).toString())
+                .body(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        response.addHeader(HttpHeaders.SET_COOKIE, borrarCookieSesion().toString());
+        return ResponseEntity.noContent().build();
+    }
+
+    private ResponseCookie crearCookieSesion(UsuarioResponse usuario) {
+        String token = jwtService.generarToken(usuario);
+        return ResponseCookie.from(JwtAuthFilter.COOKIE_NAME, token)
+                .httpOnly(true)
+                .secure(cookieSecure)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(86400)
+                .build();
+    }
+
+    private ResponseCookie borrarCookieSesion() {
+        return ResponseCookie.from(JwtAuthFilter.COOKIE_NAME, "")
+                .httpOnly(true)
+                .secure(cookieSecure)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(0)
+                .build();
     }
 }

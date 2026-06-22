@@ -1,51 +1,64 @@
 package com.novatech.store.controller;
 
 import com.novatech.store.entity.PerfilCliente;
+import com.novatech.store.service.ClienteMetricasService;
 import com.novatech.store.service.PerfilClienteService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// Controller de perfiles de cliente. Todas las rutas empiezan con /perfiles.
 @RestController
 @RequestMapping("/perfiles")
 public class PerfilClienteController {
 
     private final PerfilClienteService service;
+    private final ClienteMetricasService metricasService;
 
-    public PerfilClienteController(PerfilClienteService service) {
+    public PerfilClienteController(PerfilClienteService service, ClienteMetricasService metricasService) {
         this.service = service;
+        this.metricasService = metricasService;
     }
 
-    // GET /perfiles -> lista de perfiles.
     @GetMapping
-    public List<PerfilCliente> listar() {
+    public List<PerfilCliente> listar(
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) String tipo) {
+        if (q != null || tipo != null) {
+            return service.listar(q, tipo);
+        }
         return service.listar();
     }
 
-    // GET /perfiles/5 -> un perfil por id.
     @GetMapping("/{id}")
     public PerfilCliente obtener(@PathVariable Integer id) {
         return service.obtener(id);
     }
 
-    // POST /perfiles -> crea un perfil.
+    @GetMapping("/{id}/metricas")
+    public Map<String, Object> metricas(@PathVariable Integer id) {
+        return metricasService.metricas(id);
+    }
+
+    @GetMapping("/{id}/historial")
+    public Map<String, Object> historial(@PathVariable Integer id) {
+        return metricasService.historial(id);
+    }
+
     @PostMapping
     public ResponseEntity<PerfilCliente> crear(@RequestBody PerfilCliente perfil) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(perfil));
     }
 
-    // PUT /perfiles/5 -> actualiza un perfil.
     @PutMapping("/{id}")
     public PerfilCliente actualizar(@PathVariable Integer id, @RequestBody PerfilCliente perfil) {
         return service.actualizar(id, perfil);
     }
 
-    // DELETE /perfiles/5 -> borra un perfil.
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-        service.eliminar(id);
+    public ResponseEntity<Void> desactivar(@PathVariable Integer id) {
+        service.desactivar(id);
         return ResponseEntity.noContent().build();
     }
 }

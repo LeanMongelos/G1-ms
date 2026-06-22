@@ -36,6 +36,10 @@ public class Producto {
     @Column(name = "precio", precision = 12, scale = 2)
     private BigDecimal precio;
 
+    /** Precio de lista / PVP de referencia (puede ser mayor al precio de venta). */
+    @Column(name = "precio_lista", precision = 12, scale = 2)
+    private BigDecimal precioLista;
+
     // Cantidad de unidades que tenemos en stock.
     // Es obligatorio y no puede ser negativo.
     @NotNull(message = "El stock es obligatorio.")
@@ -43,7 +47,11 @@ public class Producto {
     @Column(name = "stock")
     private Integer stock;
 
-    // Un producto pertenece a UNA categoria, pero una categoria puede tener MUCHOS productos.
+    /** Umbral mínimo de stock; por debajo se alerta y se sugiere reposición. */
+    @Column(name = "stock_minimo")
+    private Integer stockMinimo;
+
+    // Un producto pertenece a UNA categoria
     // Eso se llama relacion "muchos a uno" (ManyToOne).
     // @JoinColumn dice cual es la columna que guarda el id de la categoria dentro de la tabla Producto.
     @ManyToOne(fetch = FetchType.EAGER)
@@ -60,6 +68,13 @@ public class Producto {
     // columnDefinition = "LONGTEXT" -> permite guardar textos muy largos (la imagen pesa).
     @Column(name = "imagen", columnDefinition = "LONGTEXT")
     private String imagen;
+
+    /** Precio resuelto según lista/canal (no persistido). */
+    @Transient
+    private BigDecimal precioCanal;
+
+    @Transient
+    private String listaPrecioCodigo;
 
     // Constructor vacio para JPA.
     public Producto() {
@@ -99,12 +114,28 @@ public class Producto {
         this.precio = precio;
     }
 
+    public BigDecimal getPrecioLista() {
+        return precioLista;
+    }
+
+    public void setPrecioLista(BigDecimal precioLista) {
+        this.precioLista = precioLista;
+    }
+
     public Integer getStock() {
         return stock;
     }
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public Integer getStockMinimo() {
+        return stockMinimo;
+    }
+
+    public void setStockMinimo(Integer stockMinimo) {
+        this.stockMinimo = stockMinimo;
     }
 
     public Categoria getCategoria() {
@@ -129,5 +160,21 @@ public class Producto {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public BigDecimal getPrecioCanal() {
+        return precioCanal;
+    }
+
+    public void setPrecioCanal(BigDecimal precioCanal) {
+        this.precioCanal = precioCanal;
+    }
+
+    public String getListaPrecioCodigo() {
+        return listaPrecioCodigo;
+    }
+
+    public void setListaPrecioCodigo(String listaPrecioCodigo) {
+        this.listaPrecioCodigo = listaPrecioCodigo;
     }
 }

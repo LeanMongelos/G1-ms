@@ -1,8 +1,9 @@
 package com.novatech.store.entity;
 
 import jakarta.persistence.*;
-// Anotacion de Bean Validation (Jakarta) para validar los datos de entrada.
 import jakarta.validation.constraints.NotBlank;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 // Esta clase representa la tabla "Envio".
 // Guarda los datos del envio de un pedido.
@@ -30,9 +31,18 @@ public class Envio {
     @Column(name = "empresa_logistica")
     private String empresaLogistica;
 
-    // Estado del envio, por ejemplo "PREPARANDO", "EN CAMINO", "ENTREGADO".
+    // Estado del envio, por ejemplo "PREPARANDO", "EN_CAMINO", "ENTREGADO".
     @Column(name = "estado_envio")
     private String estadoEnvio;
+
+    @Column(name = "numero_tracking")
+    private String numeroTracking;
+
+    @Column(name = "fecha_despacho")
+    private LocalDateTime fechaDespacho;
+
+    @Column(name = "costo_envio", precision = 12, scale = 2)
+    private BigDecimal costoEnvio;
 
     // Constructor vacio para JPA.
     public Envio() {
@@ -78,5 +88,29 @@ public class Envio {
 
     public void setEstadoEnvio(String estadoEnvio) {
         this.estadoEnvio = estadoEnvio;
+    }
+
+    public String getNumeroTracking() {
+        return numeroTracking;
+    }
+
+    public void setNumeroTracking(String numeroTracking) {
+        this.numeroTracking = numeroTracking;
+    }
+
+    public LocalDateTime getFechaDespacho() {
+        return fechaDespacho;
+    }
+
+    public void setFechaDespacho(LocalDateTime fechaDespacho) {
+        this.fechaDespacho = fechaDespacho;
+    }
+
+    public BigDecimal getCostoEnvio() {
+        return costoEnvio;
+    }
+
+    public void setCostoEnvio(BigDecimal costoEnvio) {
+        this.costoEnvio = costoEnvio;
     }
 }

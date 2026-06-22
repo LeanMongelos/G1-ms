@@ -27,19 +27,50 @@ public class ProductoController {
     @GetMapping
     public List<Producto> listar(
             @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) Integer categoriaId) {
+            @RequestParam(required = false) Integer categoriaId,
+            @RequestParam(required = false) String listaPrecio,
+            @RequestParam(required = false) String canal,
+            @RequestParam(required = false) String tipoCliente) {
+        List<Producto> base;
         if (nombre != null) {
-            return service.buscarPorNombre(nombre);
+            base = service.buscarPorNombre(nombre);
+        } else if (categoriaId != null) {
+            base = service.porCategoria(categoriaId);
+        } else {
+            base = service.listar();
         }
-        if (categoriaId != null) {
-            return service.porCategoria(categoriaId);
+        if (listaPrecio != null || canal != null || tipoCliente != null) {
+            String codigo = listaPrecio;
+            if (codigo == null || codigo.isBlank()) {
+                codigo = null;
+            }
+            final String lista = codigo;
+            final String c = canal;
+            final String t = tipoCliente;
+            return base.stream()
+                    .map(p -> lista != null
+                            ? service.obtenerConPrecioLista(p.getIdProducto(), lista, null, null)
+                            : service.obtenerConPrecioLista(p.getIdProducto(), null, c, t))
+                    .toList();
         }
-        return service.listar();
+        return base;
+    }
+
+    @GetMapping("/stock-bajo")
+    public List<Producto> stockBajo() {
+        return service.listarStockBajo();
     }
 
     // GET /productos/5 -> un producto por id.
     @GetMapping("/{id}")
-    public Producto obtener(@PathVariable Integer id) {
+    public Producto obtener(
+            @PathVariable Integer id,
+            @RequestParam(required = false) String listaPrecio,
+            @RequestParam(required = false) String canal,
+            @RequestParam(required = false) String tipoCliente) {
+        if (listaPrecio != null || canal != null || tipoCliente != null) {
+            return service.obtenerConPrecioLista(id, listaPrecio, canal, tipoCliente);
+        }
         return service.obtener(id);
     }
 

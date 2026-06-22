@@ -1,6 +1,8 @@
 package com.novatech.store.controller;
 
+import com.novatech.store.dto.UsuarioResponse;
 import com.novatech.store.entity.Usuario;
+import com.novatech.store.security.SecurityUtils;
 import com.novatech.store.service.UsuarioService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -8,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// Controller de usuarios. Todas las rutas empiezan con /usuarios.
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -19,36 +20,34 @@ public class UsuarioController {
         this.service = service;
     }
 
-    // GET /usuarios -> lista de usuarios.
     @GetMapping
-    public List<Usuario> listar() {
-        return service.listar();
+    public List<UsuarioResponse> listar() {
+        SecurityUtils.requerirStaff();
+        return service.listar().stream().map(UsuarioResponse::desde).toList();
     }
 
-    // GET /usuarios/5 -> un usuario por id.
     @GetMapping("/{id}")
-    public Usuario obtener(@PathVariable Integer id) {
-        return service.obtener(id);
+    public UsuarioResponse obtener(@PathVariable Integer id) {
+        SecurityUtils.requerirStaff();
+        return UsuarioResponse.desde(service.obtener(id));
     }
 
-    // POST /usuarios -> crea un usuario.
-    // OJO: ponemos @Valid solo en el POST (crear). En el PUT (actualizar) NO lo
-    // ponemos a proposito, porque al editar permitimos NO mandar la contrasena
-    // (se conserva la que ya tenia) y @NotBlank la marcaria como obligatoria.
     @PostMapping
-    public ResponseEntity<Usuario> crear(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(usuario));
+    public ResponseEntity<UsuarioResponse> crear(@Valid @RequestBody Usuario usuario) {
+        SecurityUtils.requerirStaff();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(UsuarioResponse.desde(service.crear(usuario)));
     }
 
-    // PUT /usuarios/5 -> actualiza un usuario.
     @PutMapping("/{id}")
-    public Usuario actualizar(@PathVariable Integer id, @RequestBody Usuario usuario) {
-        return service.actualizar(id, usuario);
+    public UsuarioResponse actualizar(@PathVariable Integer id, @RequestBody Usuario usuario) {
+        SecurityUtils.requerirStaff();
+        return UsuarioResponse.desde(service.actualizar(id, usuario));
     }
 
-    // DELETE /usuarios/5 -> borra un usuario.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+        SecurityUtils.requerirStaff();
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }

@@ -13,6 +13,8 @@ levantarlo y defenderlo** sin conocer el resto del código.
 | **Seguridad de contraseñas** | BCrypt (`spring-security-crypto`) |
 | **Build** | Maven Wrapper (`mvnw` / `mvnw.cmd`) — no hace falta instalar Maven |
 | **Puerto** | `8080` (`http://localhost:8080`) |
+| **Health** | `GET /actuator/health` (DB check) |
+| **Documentación ERP** | [../docs/README.md](../docs/README.md) |
 | **Repositorio** | `LeanMongelos/G1-ms` |
 
 ---

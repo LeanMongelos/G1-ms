@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // Logica de negocio para los pagos.
 @Service
@@ -69,9 +70,11 @@ public class PagoService {
             Usuario aprobador = usuarioRepository.findById(pago.getAprobadoPor().getIdUsuario())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Usuario que aprueba no encontrado: " + pago.getAprobadoPor().getIdUsuario()));
-            if (aprobador.getRol() == null || !aprobador.getRol().equalsIgnoreCase("ADMIN")) {
+            if (aprobador.getRol() == null
+                    || (!aprobador.getRol().equalsIgnoreCase("ADMIN")
+                    && !aprobador.getRol().equalsIgnoreCase("SUPERADMIN"))) {
                 throw new AccesoDenegadoException(
-                        "Solo un usuario ADMIN puede autorizar un pago.");
+                        "Solo un administrador puede autorizar un pago.");
             }
             pago.setAprobadoPor(aprobador);
         }
@@ -120,8 +123,10 @@ public class PagoService {
     }
 
     // Actualiza un pago existente.
+    @Transactional
     public Pago actualizar(Integer id, Pago datos) {
         Pago pago = obtener(id);
+        String estadoAnterior = pago.getEstado();
         pago.setPedido(datos.getPedido());
         pago.setMonto(datos.getMonto());
         pago.setMetodo(datos.getMetodo());
@@ -132,7 +137,56 @@ public class PagoService {
         if (datos.getFechaPago() != null) {
             pago.setFechaPago(datos.getFechaPago());
         }
-        return repository.save(pago);
+        Pago guardado = repository.save(pago);
+        if ("APROBADO".equalsIgnoreCase(guardado.getEstado())
+                && !"APROBADO".equalsIgnoreCase(estadoAnterior)) {
+            recalcularEstadoPedido(guardado.getPedido().getIdPedido());
+        }
+        return guardado;
+    }
+
+    // Aprueba un pago PENDIENTE y recalcula el estado del pedido.
+    @Transactional
+    public Pago aprobar(Integer idPago, Integer idAdmin) {
+        Pago pago = obtener(idPago);
+        if (pago.getEstado() != null && pago.getEstado().equalsIgnoreCase("APROBADO")) {
+            throw new ReglaNegocioException("El pago ya esta aprobado.");
+        }
+        if (pago.getEstado() != null && !pago.getEstado().equalsIgnoreCase("PENDIENTE")) {
+            throw new ReglaNegocioException("Solo se pueden aprobar pagos en estado PENDIENTE.");
+        }
+
+        Usuario aprobador = usuarioRepository.findById(idAdmin)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + idAdmin));
+        if (aprobador.getRol() == null
+                || (!aprobador.getRol().equalsIgnoreCase("ADMIN")
+                && !aprobador.getRol().equalsIgnoreCase("SUPERADMIN"))) {
+            throw new AccesoDenegadoException("Solo un administrador puede autorizar un pago.");
+        }
+
+        pago.setEstado("APROBADO");
+        pago.setAprobadoPor(aprobador);
+        if (pago.getFechaPago() == null) {
+            pago.setFechaPago(LocalDateTime.now());
+        }
+        Pago guardado = repository.save(pago);
+        recalcularEstadoPedido(pago.getPedido().getIdPedido());
+        return guardado;
+    }
+
+    private void recalcularEstadoPedido(Integer idPedido) {
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
+        BigDecimal total = pedido.getTotal() == null ? BigDecimal.ZERO : pedido.getTotal();
+        BigDecimal pagado = sumarPagosAprobados(idPedido);
+        if (pagado.compareTo(total) >= 0) {
+            pedido.setEstado("PAGADO");
+        } else if (pagado.compareTo(BigDecimal.ZERO) > 0) {
+            pedido.setEstado("PARCIAL");
+        } else {
+            pedido.setEstado("PENDIENTE");
+        }
+        pedidoRepository.save(pedido);
     }
 
     // Borra un pago por su id.

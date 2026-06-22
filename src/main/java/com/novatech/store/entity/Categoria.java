@@ -4,6 +4,8 @@ package com.novatech.store.entity;
 import jakarta.persistence.*;
 // Anotacion de Bean Validation (Jakarta) para validar los datos de entrada.
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 // @Entity = esta clase es una tabla de la base de datos.
 @Entity
@@ -18,13 +20,19 @@ public class Categoria {
     @Column(name = "id_categoria")
     private Integer idCategoria;
 
-    // Nombre de la categoria, por ejemplo "Notebooks". Es obligatorio y no puede ir vacio.
+    // Nombre de la categoria, por ejemplo "Notebooks". Validacion detallada en NombreCategoriaValidator.
     @NotBlank(message = "El nombre de la categoria es obligatorio.")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres.")
     @Column(name = "nombre")
     private String nombre;
 
     // Descripcion mas larga de la categoria.
     // columnDefinition = "TEXT" sirve para poder guardar textos largos.
+    @Size(max = 500, message = "La descripcion no puede superar los 500 caracteres.")
+    @Pattern(
+        regexp = "^$|^[\\p{L}\\p{N}\\p{Zs}.,;:!?()\\-']{3,500}$",
+        message = "La descripcion tiene caracteres no permitidos."
+    )
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 

@@ -62,6 +62,12 @@ public class PagoController {
         return service.actualizar(id, pago);
     }
 
+    // POST /pagos/5/aprobar?idAdmin=1 -> aprueba un pago pendiente.
+    @PostMapping("/{id}/aprobar")
+    public Pago aprobar(@PathVariable Integer id, @RequestParam Integer idAdmin) {
+        return service.aprobar(id, idAdmin);
+    }
+
     // DELETE /pagos/5 -> borra un pago.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {

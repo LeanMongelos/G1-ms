@@ -38,6 +38,17 @@ public class Pedido {
     @Column(name = "total", precision = 12, scale = 2)
     private BigDecimal total;
 
+    /** WEB, ADMIN, WHATSAPP, EMAIL, INSTAGRAM, FACEBOOK, POS */
+    @Column(name = "canal_origen")
+    private String canalOrigen;
+
+    /** ENVIO o RETIRO_TIENDA */
+    @Column(name = "tipo_entrega")
+    private String tipoEntrega;
+
+    @Column(name = "notas", columnDefinition = "TEXT")
+    private String notas;
+
     // Constructor vacio para JPA.
     public Pedido() {
     }
@@ -82,5 +93,29 @@ public class Pedido {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public String getCanalOrigen() {
+        return canalOrigen;
+    }
+
+    public void setCanalOrigen(String canalOrigen) {
+        this.canalOrigen = canalOrigen;
+    }
+
+    public String getTipoEntrega() {
+        return tipoEntrega;
+    }
+
+    public void setTipoEntrega(String tipoEntrega) {
+        this.tipoEntrega = tipoEntrega;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
     }
 }
