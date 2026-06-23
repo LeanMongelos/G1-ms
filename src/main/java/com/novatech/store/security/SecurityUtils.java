@@ -35,6 +35,17 @@ public final class SecurityUtils {
         return u;
     }
 
+    public static boolean esCliente(String rol) {
+        return rol != null && "CLIENTE".equalsIgnoreCase(rol.trim());
+    }
+
+    public static void requerirCliente() {
+        UsuarioResponse u = requerirAutenticado();
+        if (!esCliente(u.rol())) {
+            throw new AccessDeniedException("El portal de cliente es solo para usuarios con rol CLIENTE");
+        }
+    }
+
     public static void requerirStaff() {
         UsuarioResponse u = requerirAutenticado();
         if (!esStaff(u.rol())) {
