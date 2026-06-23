@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 // Esta clase representa la tabla "DetalleCarrito".
@@ -17,6 +18,7 @@ public class DetalleCarrito {
     // A que carrito pertenece este renglon.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_carrito")
+    @JsonIgnore
     private Carrito carrito;
 
     // Que producto se agrego en este renglon.

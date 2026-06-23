@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -18,6 +19,7 @@ public class DetallePedido {
     // A que pedido pertenece este renglon.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
+    @JsonIgnore
     private Pedido pedido;
 
     // Que producto se compro en este renglon.

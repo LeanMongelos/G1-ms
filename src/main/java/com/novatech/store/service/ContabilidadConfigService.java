@@ -25,15 +25,7 @@ public class ContabilidadConfigService {
 
     public Map<String, Object> resumen() {
         ensureContabilidadArgentina();
-        Map<String, Object> out = new HashMap<>();
-        out.put("alicuotas", alicuotaRepository.findAllByOrderByPorcentajeAsc());
-        out.put("config", configRepository.findByGrupoIgnoreCase("contabilidad"));
-        out.put("contadores", Map.of(
-                "alicuotas", alicuotaRepository.count(),
-                "condicionesIva", countConfig("contabilidad", "condicion_iva"),
-                "regimenes", countConfig("contabilidad", "regimen"),
-                "planCuentas", countConfig("contabilidad", "cuenta")));
-        return out;
+        return buildResumen();
     }
 
     @Transactional
@@ -45,7 +37,19 @@ public class ContabilidadConfigService {
         ensureConfig("contabilidad", "ejercicio_fiscal", "2026", "Ejercicio fiscal");
         ensureConfig("contabilidad", "iva_general", "21", "IVA general (%)");
         ensureConfig("contabilidad", "iibb", "3", "IIBB (%)");
-        return resumen();
+        return buildResumen();
+    }
+
+    private Map<String, Object> buildResumen() {
+        Map<String, Object> out = new HashMap<>();
+        out.put("alicuotas", alicuotaRepository.findAllByOrderByPorcentajeAsc());
+        out.put("config", configRepository.findByGrupoIgnoreCase("contabilidad"));
+        out.put("contadores", Map.of(
+                "alicuotas", alicuotaRepository.count(),
+                "condicionesIva", countConfig("contabilidad", "condicion_iva"),
+                "regimenes", countConfig("contabilidad", "regimen"),
+                "planCuentas", countConfig("contabilidad", "cuenta")));
+        return out;
     }
 
     private void seedAlicuotas() {

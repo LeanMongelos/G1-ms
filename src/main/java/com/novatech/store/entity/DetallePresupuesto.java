@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ public class DetallePresupuesto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_presupuesto")
+    @JsonIgnore
     private Presupuesto presupuesto;
 
     @ManyToOne(fetch = FetchType.EAGER)

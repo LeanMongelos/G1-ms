@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class DetalleRemito {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_remito")
+    @JsonIgnore
     private Remito remito;
 
     @ManyToOne(fetch = FetchType.EAGER)
