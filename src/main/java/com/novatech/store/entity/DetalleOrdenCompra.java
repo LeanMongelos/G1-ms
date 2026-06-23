@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ public class DetalleOrdenCompra {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_orden")
+    @JsonIgnore
     private OrdenCompra orden;
 
     @ManyToOne(fetch = FetchType.EAGER)
