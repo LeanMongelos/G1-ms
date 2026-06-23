@@ -1,5 +1,6 @@
 package com.novatech.store.controller;
 
+import com.novatech.store.dto.CuotaResumenDto;
 import com.novatech.store.entity.Cuota;
 import com.novatech.store.service.CuotaService;
 import java.util.List;
@@ -17,33 +18,33 @@ public class CuotaController {
     }
 
     @GetMapping
-    public List<Cuota> listar() {
-        return service.listar();
+    public List<CuotaResumenDto> listar() {
+        return service.listar().stream().map(CuotaResumenDto::desde).toList();
     }
 
     @GetMapping("/vencidas")
-    public List<Cuota> vencidas() {
-        return service.listarVencidas();
+    public List<CuotaResumenDto> vencidas() {
+        return service.listarVencidas().stream().map(CuotaResumenDto::desde).toList();
     }
 
     @GetMapping("/por-vencer")
-    public List<Cuota> porVencer(@RequestParam(defaultValue = "7") int dias) {
-        return service.listarPorVencer(dias);
+    public List<CuotaResumenDto> porVencer(@RequestParam(defaultValue = "7") int dias) {
+        return service.listarPorVencer(dias).stream().map(CuotaResumenDto::desde).toList();
     }
 
     @GetMapping("/plan/{idPlan}")
-    public List<Cuota> porPlan(@PathVariable Integer idPlan) {
-        return service.listarPorPlan(idPlan);
+    public List<CuotaResumenDto> porPlan(@PathVariable Integer idPlan) {
+        return service.listarPorPlan(idPlan).stream().map(CuotaResumenDto::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public Cuota obtener(@PathVariable Integer id) {
-        return service.obtener(id);
+    public CuotaResumenDto obtener(@PathVariable Integer id) {
+        return CuotaResumenDto.desde(service.obtener(id));
     }
 
     @PostMapping("/{id}/pagar")
-    public Cuota pagar(@PathVariable Integer id) {
-        return service.marcarPagada(id);
+    public CuotaResumenDto pagar(@PathVariable Integer id) {
+        return CuotaResumenDto.desde(service.marcarPagada(id));
     }
 
     @DeleteMapping("/{id}")

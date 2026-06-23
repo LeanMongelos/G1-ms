@@ -43,6 +43,8 @@ public class SecurityConfig {
             "/promociones/**",
             "/ordenes-compra/**",
             "/creditos/**",
+            "/cuotas/**",
+            "/planes/**",
             "/auditoria/**",
             "/logs/**",
             "/emisor/**",
@@ -75,7 +77,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/logout").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/health", "/health/**", "/ping").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/health", "/health/**", "/actuator/health").permitAll()
                         .requestMatchers(HttpMethod.GET, "/productos", "/productos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/categorias", "/categorias/**").permitAll()
                         .requestMatchers(STAFF_ONLY).access((authentication, context) -> {
