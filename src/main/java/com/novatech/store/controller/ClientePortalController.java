@@ -5,6 +5,7 @@ import com.novatech.store.dto.CrearDevolucionRequest;
 import com.novatech.store.dto.CrearTicketClienteRequest;
 import com.novatech.store.dto.EnviarMensajeTicketRequest;
 import com.novatech.store.dto.CuotaResumenDto;
+import com.novatech.store.dto.PrestamoClienteDto;
 import com.novatech.store.dto.PedidoDetalleResponse;
 import com.novatech.store.entity.Conversacion;
 import com.novatech.store.entity.Factura;
@@ -100,5 +101,10 @@ public class ClientePortalController {
     @GetMapping("/cuotas")
     public List<CuotaResumenDto> listarCuotas() {
         return service.listarCuotas();
+    }
+
+    @GetMapping("/prestamos")
+    public List<PrestamoClienteDto> listarPrestamos() {
+        return service.listarPrestamos();
     }
 }
