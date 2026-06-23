@@ -74,6 +74,21 @@ class RegressionSmokeTest extends SmokeTestBase {
     }
 
     @Test
+    void enviosListIncludesPedidoForTableDisplay() throws Exception {
+        var builder = get("/envios");
+        applyAuth(builder, SmokeAuth.STAFF);
+        MvcResult result = mockMvc.perform(builder).andReturn();
+        assertEquals(200, result.getResponse().getStatus());
+        JsonNode json = MAPPER.readTree(result.getResponse().getContentAsString());
+        assertTrue(json.isArray(), "envios must return JSON array");
+        if (json.size() > 0) {
+            JsonNode first = json.get(0);
+            assertTrue(first.has("pedido"), "envio list must serialize pedido for admin table");
+            assertTrue(first.get("pedido").has("idPedido"), "pedido must include idPedido");
+        }
+    }
+
+    @Test
     void contabilidadResumenReturnsJsonObjectWithoutRecursion() throws Exception {
         var builder = get("/config/contabilidad/resumen");
         applyAuth(builder, SmokeAuth.STAFF);
