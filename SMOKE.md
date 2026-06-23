@@ -30,9 +30,23 @@ Uses the **`test`** profile with **H2 in-memory** (no MySQL required). `SmokeTes
 | Test class | Purpose |
 |------------|---------|
 | `ApiSmokeTest` | Every GET endpoint (~100 cases): status ≠ 500, JSON parseable when `application/json` |
-| `RegressionSmokeTest` | `/presupuestos`, `/remitos`, `/config/contabilidad/resumen` — known past bugs |
+| `RegressionSmokeTest` | Regresiones documentadas en [docs/GUARDRAILS.md](./docs/GUARDRAILS.md) |
 | `SecuritySmokeTest` | Staff vs cliente vs anonymous access boundaries |
 | `AuthSmokeTest` | Login, invalid credentials, `/auth/me` session |
+
+### RegressionSmokeTest (bugs históricos)
+
+| Test | Síntoma que evita |
+|------|-------------------|
+| `presupuestosListReturnsJsonArrayWithoutServerError` | JSON circular / invalid en presupuestos |
+| `remitosListReturnsJsonArrayWithoutServerError` | JSON circular en remitos |
+| `facturasListReturnsParseableJsonWithoutHugePayload` | Payload enorme, parse error en facturación |
+| `contabilidadResumenReturnsJsonObjectWithoutRecursion` | 500 StackOverflow contabilidad |
+| `enviosListIncludesPedidoForTableDisplay` | Tabla envíos sin pedido/cliente |
+| `clientePedidosAndPerfilReturnJsonForCliente` | Portal cliente HTML/JSON |
+| `deleteProductoReferenciadoReturns400Not500` | DELETE producto demo → 500 |
+
+Smoke manual UI (5 min): ver `docs/GUARDRAILS.md` § checklist manual.
 
 ### Assertions per endpoint
 
