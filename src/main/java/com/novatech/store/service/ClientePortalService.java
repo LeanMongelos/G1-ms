@@ -4,14 +4,18 @@ import com.novatech.store.dto.ActualizarPerfilClienteRequest;
 import com.novatech.store.dto.ActualizarPerfilRequest;
 import com.novatech.store.dto.CrearTicketClienteRequest;
 import com.novatech.store.dto.EnviarMensajeTicketRequest;
+import com.novatech.store.dto.CuotaClienteItemDto;
 import com.novatech.store.dto.CuotaResumenDto;
+import com.novatech.store.dto.PrestamoClienteDto;
 import com.novatech.store.dto.PedidoDetalleResponse;
 import com.novatech.store.dto.UsuarioResponse;
 import com.novatech.store.entity.Conversacion;
+import com.novatech.store.entity.Cuota;
 import com.novatech.store.entity.Factura;
 import com.novatech.store.entity.MensajeConversacion;
 import com.novatech.store.entity.Pedido;
 import com.novatech.store.entity.PerfilCliente;
+import com.novatech.store.entity.PlanCuotas;
 import com.novatech.store.entity.SolicitudDevolucion;
 import com.novatech.store.exception.AccesoDenegadoException;
 import com.novatech.store.exception.ReglaNegocioException;
@@ -26,6 +30,8 @@ import com.novatech.store.security.SecurityUtils;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +47,7 @@ public class ClientePortalService {
     private final MensajeConversacionRepository mensajeRepository;
     private final SolicitudDevolucionService devolucionService;
     private final CuotaRepository cuotaRepository;
+    private final CuotaService cuotaService;
 
     public ClientePortalService(PedidoService pedidoService,
                                 PedidoRepository pedidoRepository,
@@ -50,7 +57,8 @@ public class ClientePortalService {
                                 ConversacionRepository conversacionRepository,
                                 MensajeConversacionRepository mensajeRepository,
                                 SolicitudDevolucionService devolucionService,
-                                CuotaRepository cuotaRepository) {
+                                CuotaRepository cuotaRepository,
+                                CuotaService cuotaService) {
         this.pedidoService = pedidoService;
         this.pedidoRepository = pedidoRepository;
         this.facturaRepository = facturaRepository;
@@ -60,6 +68,7 @@ public class ClientePortalService {
         this.mensajeRepository = mensajeRepository;
         this.devolucionService = devolucionService;
         this.cuotaRepository = cuotaRepository;
+        this.cuotaService = cuotaService;
     }
 
     private UsuarioResponse usuarioActual() {
@@ -218,6 +227,61 @@ public class ClientePortalService {
         return cuotaRepository.findByUsuario(usuarioActual().idUsuario()).stream()
                 .map(CuotaResumenDto::desde)
                 .toList();
+    }
+
+    public List<PrestamoClienteDto> listarPrestamos() {
+        cuotaService.actualizarVencidas();
+        List<Cuota> todas = cuotaRepository.findByUsuario(usuarioActual().idUsuario());
+        Map<Integer, List<Cuota>> porPlan = todas.stream()
+                .filter(c -> c.getPlan() != null && c.getPlan().getIdPlan() != null)
+                .collect(Collectors.groupingBy(c -> c.getPlan().getIdPlan()));
+
+        return porPlan.values().stream()
+                .map(this::mapearPrestamo)
+                .sorted(Comparator.comparing(PrestamoClienteDto::idPlan, Comparator.nullsLast(Comparator.reverseOrder())))
+                .toList();
+    }
+
+    private PrestamoClienteDto mapearPrestamo(List<Cuota> cuotasPlan) {
+        cuotasPlan.sort(Comparator.comparing(Cuota::getNumeroCuota, Comparator.nullsLast(Comparator.naturalOrder())));
+        PlanCuotas plan = cuotasPlan.get(0).getPlan();
+
+        List<CuotaClienteItemDto> items = cuotasPlan.stream().map(CuotaClienteItemDto::desde).toList();
+
+        int pagadas = (int) cuotasPlan.stream()
+                .filter(c -> "PAGADA".equalsIgnoreCase(c.getEstado()))
+                .count();
+
+        Cuota proxima = cuotasPlan.stream()
+                .filter(c -> !"PAGADA".equalsIgnoreCase(c.getEstado()))
+                .min(Comparator.comparing(Cuota::getNumeroCuota, Comparator.nullsLast(Comparator.naturalOrder())))
+                .orElse(null);
+
+        java.math.BigDecimal saldoPendiente = cuotasPlan.stream()
+                .filter(c -> !"PAGADA".equalsIgnoreCase(c.getEstado()))
+                .map(Cuota::getMonto)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+
+        java.math.BigDecimal totalFinanciado = cuotasPlan.stream()
+                .map(Cuota::getMonto)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+
+        Integer idPedido = plan.getPedido() != null ? plan.getPedido().getIdPedido() : null;
+
+        return new PrestamoClienteDto(
+                plan.getIdPlan(),
+                idPedido,
+                plan.getCantidadCuotas(),
+                plan.getInteres(),
+                plan.getEstado(),
+                totalFinanciado,
+                pagadas,
+                proxima != null ? proxima.getNumeroCuota() : null,
+                proxima != null ? proxima.getIdCuota() : null,
+                saldoPendiente,
+                proxima != null ? proxima.getMonto() : null,
+                proxima != null ? proxima.getFechaVencimiento() : null,
+                items);
     }
 
     private PerfilCliente crearPerfilBasico(UsuarioResponse u) {

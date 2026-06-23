@@ -188,6 +188,12 @@ INSERT IGNORE INTO pago (id_pago, id_pedido, fecha_pago, monto, metodo, aprobado
 INSERT IGNORE INTO plan_cuotas (id_plan, id_cliente, id_pedido, cantidad_cuotas, interes, estado) VALUES
   (1, 1, 1, 3, 15.00, 'ACTIVO');
 
+-- Cuotas del plan (demo: 1 pagada, 2 pendientes)
+INSERT IGNORE INTO cuota (id_cuota, id_plan, numero_cuota, monto, fecha_vencimiento, fecha_pago, estado, aviso_vencimiento_enviado) VALUES
+  (1, 1, 1, 34116.67, DATE_SUB(CURDATE(), INTERVAL 30 DAY), DATE_SUB(NOW(), INTERVAL 28 DAY), 'PAGADA', 0),
+  (2, 1, 2, 34116.67, DATE_ADD(CURDATE(), INTERVAL 5 DAY), NULL, 'PENDIENTE', 0),
+  (3, 1, 3, 34116.66, DATE_ADD(CURDATE(), INTERVAL 35 DAY), NULL, 'PENDIENTE', 0);
+
 -- Envio del pedido
 INSERT IGNORE INTO envio (id_envio, id_pedido, direccion_envio, empresa_logistica, estado_envio) VALUES
   (1, 1, 'Av. Siempre Viva 742', 'Andreani', 'EN_CAMINO');
