@@ -387,3 +387,15 @@ El backend se construyó **por módulos**, cada uno en su rama `feature/*` e int
 | Documentación | `feature/documentacion` |
 
 `main` contiene todos los módulos integrados y compila (`./mvnw -DskipTests clean compile`).
+
+---
+
+## 14. Smoke tests (regresión API)
+
+Suite de integración que recorre **todos los GET** de la API y valida que no haya HTTP 500, JSON inválido ni regresiones de auth (staff vs cliente).
+
+```powershell
+.\mvnw.cmd test -Dtest="com.novatech.store.smoke.*"
+```
+
+Detalle de cobertura y credenciales demo: **[SMOKE.md](./SMOKE.md)**.
