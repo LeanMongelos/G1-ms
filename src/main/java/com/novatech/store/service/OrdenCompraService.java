@@ -7,6 +7,7 @@ import com.novatech.store.exception.ReglaNegocioException;
 import com.novatech.store.exception.ResourceNotFoundException;
 import com.novatech.store.repository.OrdenCompraRepository;
 import com.novatech.store.repository.ProductoRepository;
+import com.novatech.store.util.StockInventarioUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrdenCompraService {
-
-    private static final int STOCK_MINIMO_DEFAULT = 5;
 
     private final OrdenCompraRepository repository;
     private final ProductoRepository productoRepository;
@@ -40,7 +39,7 @@ public class OrdenCompraService {
 
     public List<Producto> listarProductosStockBajo() {
         return productoRepository.findAll().stream()
-                .filter(this::esStockBajo)
+                .filter(StockInventarioUtil::esStockBajo)
                 .toList();
     }
 
@@ -129,8 +128,8 @@ public class OrdenCompraService {
         List<DetalleOrdenCompra> detalles = new ArrayList<>();
 
         for (Producto p : productos) {
-            int min = stockMinimo(p);
-            int stock = p.getStock() != null ? p.getStock() : 0;
+            int min = StockInventarioUtil.stockMinimoEfectivo(p);
+            int stock = StockInventarioUtil.stockActual(p);
             int cantidad = Math.max(min * 2 - stock, min);
 
             BigDecimal costo = p.getPrecioLista() != null ? p.getPrecioLista()
@@ -150,15 +149,5 @@ public class OrdenCompraService {
         orden.setDetalles(detalles);
         orden.setTotal(total);
         return repository.save(orden);
-    }
-
-    private boolean esStockBajo(Producto p) {
-        int stock = p.getStock() != null ? p.getStock() : 0;
-        return stock <= stockMinimo(p);
-    }
-
-    private int stockMinimo(Producto p) {
-        return p.getStockMinimo() != null && p.getStockMinimo() > 0
-                ? p.getStockMinimo() : STOCK_MINIMO_DEFAULT;
     }
 }

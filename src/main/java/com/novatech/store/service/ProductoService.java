@@ -3,6 +3,7 @@ package com.novatech.store.service;
 import com.novatech.store.entity.Producto;
 import com.novatech.store.exception.ResourceNotFoundException;
 import com.novatech.store.repository.ProductoRepository;
+import com.novatech.store.util.StockInventarioUtil;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -64,13 +65,14 @@ public class ProductoService {
 
     public List<Producto> listarStockBajo() {
         return repository.findAll().stream()
-                .filter(p -> {
-                    int min = p.getStockMinimo() != null && p.getStockMinimo() > 0
-                            ? p.getStockMinimo() : 5;
-                    int stock = p.getStock() != null ? p.getStock() : 0;
-                    return stock <= min;
-                })
+                .filter(StockInventarioUtil::esStockBajo)
                 .toList();
+    }
+
+    public long contarStockBajo() {
+        return repository.findAll().stream()
+                .filter(StockInventarioUtil::esStockBajo)
+                .count();
     }
 
     public List<Producto> listarConPrecioLista(String codigoLista, String canal, String tipoCliente) {
