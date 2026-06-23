@@ -6,6 +6,7 @@ import com.novatech.store.dto.PrecioResueltoDto;
 import com.novatech.store.entity.ListaPrecio;
 import com.novatech.store.entity.ListaPrecioDetalle;
 import com.novatech.store.service.ListaPrecioService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class ListaPrecioController {
     }
 
     @PutMapping("/{id}")
-    public ListaPrecio actualizar(@PathVariable Integer id, @RequestBody ListaPrecioUpdateRequest body) {
+    public ListaPrecio actualizar(@PathVariable Integer id, @Valid @RequestBody ListaPrecioUpdateRequest body) {
         return service.actualizar(id, body);
     }
 
@@ -48,7 +49,7 @@ public class ListaPrecioController {
 
     @PostMapping("/{id}/detalles")
     public ResponseEntity<ListaPrecioDetalle> guardarDetalle(
-            @PathVariable Integer id, @RequestBody ListaPrecioDetalleRequest body) {
+            @PathVariable Integer id, @Valid @RequestBody ListaPrecioDetalleRequest body) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.guardarDetalle(id, body));
     }
 

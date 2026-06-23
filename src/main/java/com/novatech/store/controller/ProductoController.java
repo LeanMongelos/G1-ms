@@ -82,7 +82,7 @@ public class ProductoController {
 
     // PUT /productos/5 -> actualiza un producto.
     @PutMapping("/{id}")
-    public Producto actualizar(@PathVariable Integer id, @RequestBody Producto producto) {
+    public Producto actualizar(@PathVariable Integer id, @Valid @RequestBody Producto producto) {
         return service.actualizar(id, producto);
     }
 

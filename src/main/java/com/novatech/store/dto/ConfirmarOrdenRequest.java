@@ -1,9 +1,14 @@
 package com.novatech.store.dto;
 
+import com.novatech.store.validation.ValidationPatterns;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,25 +22,37 @@ public class ConfirmarOrdenRequest {
     private List<ConfirmarOrdenLineaRequest> lineas;
 
     @NotBlank(message = "El metodo de pago es obligatorio.")
+    @Pattern(regexp = ValidationPatterns.METODO_PAGO, message = "Metodo de pago invalido.")
     private String metodoPago;
 
-    /** ENVIO o RETIRO_TIENDA. Por defecto ENVIO. */
+    @Pattern(regexp = ValidationPatterns.TIPO_ENTREGA, message = "Tipo de entrega invalido.")
     private String tipoEntrega;
 
-    /** WEB, ADMIN, WHATSAPP, EMAIL, INSTAGRAM, FACEBOOK, POS. Por defecto WEB. */
+    @Pattern(regexp = ValidationPatterns.CANAL_ORIGEN, message = "Canal de origen invalido.")
     private String canalOrigen;
 
-    /** MAYORISTA, B2B, ECOMMERCE, LOCAL — opcional; si no se envía se infiere por canal/tipo cliente. */
+    @Size(max = 50, message = "El codigo de lista no puede superar 50 caracteres.")
     private String codigoListaPrecio;
 
+    @Size(min = 10, max = 300, message = "La direccion debe tener entre 10 y 300 caracteres.")
     private String direccionEnvio;
+
+    @Size(max = 100, message = "La empresa logistica no puede superar 100 caracteres.")
     private String empresaLogistica;
+
+    @Size(max = 500, message = "Las notas no pueden superar 500 caracteres.")
     private String notas;
+
+    @Size(max = 100, message = "El proveedor de billetera no puede superar 100 caracteres.")
     private String proveedorBilletera;
+
+    @Size(max = 100, message = "La referencia no puede superar 100 caracteres.")
     private String referencia;
 
-    /** Solo para PRESTAMO_CASA */
+    @Min(value = 1, message = "Las cuotas deben ser al menos 1.")
+    @Max(value = 24, message = "Las cuotas no pueden superar 24.")
     private Integer cantidadCuotas;
+
     private BigDecimal interes;
 
     public Integer getIdUsuario() {
