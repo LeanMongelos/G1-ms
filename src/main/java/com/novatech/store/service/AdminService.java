@@ -21,6 +21,7 @@ import com.novatech.store.repository.PedidoRepository;
 import com.novatech.store.repository.PerfilClienteRepository;
 import com.novatech.store.repository.PresupuestoRepository;
 import com.novatech.store.repository.RemitoRepository;
+import com.novatech.store.util.PagoUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -169,7 +170,10 @@ public class AdminService {
                             : LocalDateTime.now()));
         }
 
-        for (Conversacion conv : conversacionRepository.findByEstadoIgnoreCase("PENDIENTE")) {
+        for (Conversacion conv : conversacionRepository.findAll()) {
+            if (!CrmMetricsService.conversacionPendiente(conv)) {
+                continue;
+            }
             lista.add(notif(
                     "CRM_MENSAJE",
                     "Mensaje CRM sin atender",
@@ -316,16 +320,10 @@ public class AdminService {
 
     private BigDecimal calcularSaldo(Pedido pedido) {
         BigDecimal total = pedido.getTotal() != null ? pedido.getTotal() : BigDecimal.ZERO;
-        BigDecimal pagado = BigDecimal.ZERO;
-        if (pedido.getIdPedido() != null) {
-            for (Pago p : pagoRepository.findByPedidoIdPedido(pedido.getIdPedido())) {
-                if (p.getMonto() != null && p.getEstado() != null
-                        && "APROBADO".equalsIgnoreCase(p.getEstado())) {
-                    pagado = pagado.add(p.getMonto());
-                }
-            }
+        if (pedido.getIdPedido() == null) {
+            return total.max(BigDecimal.ZERO);
         }
-        return total.subtract(pagado).max(BigDecimal.ZERO);
+        return PagoUtil.saldoPedido(total, pagoRepository.findByPedidoIdPedido(pedido.getIdPedido()));
     }
 
     private String nombreCliente(Pedido p) {

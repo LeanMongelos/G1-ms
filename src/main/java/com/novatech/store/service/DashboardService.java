@@ -8,24 +8,19 @@ import com.novatech.store.entity.Factura;
 import com.novatech.store.entity.Pago;
 import com.novatech.store.entity.Pedido;
 import com.novatech.store.entity.Producto;
-import com.novatech.store.repository.CampanaRepository;
-import com.novatech.store.repository.ConversacionRepository;
-import com.novatech.store.repository.CuotaRepository;
 import com.novatech.store.repository.FacturaRepository;
 import com.novatech.store.repository.PagoRepository;
 import com.novatech.store.repository.PedidoRepository;
 import com.novatech.store.repository.ProductoRepository;
-import com.novatech.store.repository.PromocionRepository;
+import com.novatech.store.util.PagoUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,10 +31,7 @@ public class DashboardService {
     private final FacturaRepository facturaRepository;
     private final ProductoRepository productoRepository;
     private final ProductoService productoService;
-    private final PromocionRepository promocionRepository;
-    private final CampanaRepository campanaRepository;
-    private final CuotaRepository cuotaRepository;
-    private final ConversacionRepository conversacionRepository;
+    private final CrmMetricsService crmMetricsService;
     private final CuotaService cuotaService;
 
     public DashboardService(PedidoRepository pedidoRepository,
@@ -47,20 +39,14 @@ public class DashboardService {
                             FacturaRepository facturaRepository,
                             ProductoRepository productoRepository,
                             ProductoService productoService,
-                            PromocionRepository promocionRepository,
-                            CampanaRepository campanaRepository,
-                            CuotaRepository cuotaRepository,
-                            ConversacionRepository conversacionRepository,
+                            CrmMetricsService crmMetricsService,
                             CuotaService cuotaService) {
         this.pedidoRepository = pedidoRepository;
         this.pagoRepository = pagoRepository;
         this.facturaRepository = facturaRepository;
         this.productoRepository = productoRepository;
         this.productoService = productoService;
-        this.promocionRepository = promocionRepository;
-        this.campanaRepository = campanaRepository;
-        this.cuotaRepository = cuotaRepository;
-        this.conversacionRepository = conversacionRepository;
+        this.crmMetricsService = crmMetricsService;
         this.cuotaService = cuotaService;
     }
 
@@ -84,7 +70,6 @@ public class DashboardService {
         long pedidosHoy = 0;
         long pedidosPendientes = 0;
         long pedidosPagados = 0;
-        Set<Integer> clientesActivos = new HashSet<>();
         Map<String, Long> conteoEstados = new HashMap<>();
 
         for (Pedido p : pedidos) {
@@ -110,10 +95,6 @@ public class DashboardService {
             if ("PAGADO".equals(estado)) {
                 pedidosPagados++;
             }
-
-            if (p.getUsuario() != null && p.getUsuario().getIdUsuario() != null) {
-                clientesActivos.add(p.getUsuario().getIdUsuario());
-            }
         }
 
         res.setVentasTotales(ventasTotales);
@@ -127,7 +108,7 @@ public class DashboardService {
         res.setTicketPromedio(pedidos.isEmpty()
                 ? BigDecimal.ZERO
                 : ventasTotales.divide(BigDecimal.valueOf(pedidos.size()), 2, RoundingMode.HALF_UP));
-        res.setClientesActivos(clientesActivos.size());
+        res.setClientesActivos(crmMetricsService.contarClientesActivos());
 
         long totalPedidos = pedidos.size();
         List<EstadoCantidadDto> porEstado = conteoEstados.entrySet().stream()
@@ -144,7 +125,7 @@ public class DashboardService {
         BigDecimal cobradoMes = BigDecimal.ZERO;
         Map<Integer, BigDecimal> pagosPorPedido = new HashMap<>();
         for (Pago pago : pagos) {
-            if (!pagoAprobado(pago)) {
+            if (!PagoUtil.aprobado(pago)) {
                 continue;
             }
             BigDecimal monto = pago.getMonto() != null ? pago.getMonto() : BigDecimal.ZERO;
@@ -202,26 +183,12 @@ public class DashboardService {
         res.setProductosTotal(productos.size());
         res.setProductosBajoStock(productoService.contarStockBajo());
 
-        // --- CRM / crédito ---
-        res.setPromocionesActivas(promocionRepository.findAll().stream()
-                .filter(p -> "ACTIVA".equals(p.getEstado()))
-                .count());
-        res.setCampanasPendientes(campanaRepository.findAll().stream()
-                .filter(c -> "BORRADOR".equals(c.getEstado()) || "PROGRAMADA".equals(c.getEstado()))
-                .count());
-        res.setCrmPendientes(conversacionRepository.findAll().stream()
-                .filter(c -> {
-                    String est = c.getEstado() != null ? c.getEstado().toUpperCase() : "";
-                    return "ABIERTA".equals(est) || "PENDIENTE".equals(est) || "NUEVA".equals(est);
-                })
-                .count());
-        res.setCuotasVencidas(cuotaRepository.findByEstado("VENCIDA").size());
-        LocalDate limite = LocalDate.now().plusDays(7);
-        res.setCuotasPorVencer(cuotaRepository.findAll().stream()
-                .filter(c -> "PENDIENTE".equals(c.getEstado()))
-                .filter(c -> !c.getFechaVencimiento().isBefore(LocalDate.now()))
-                .filter(c -> !c.getFechaVencimiento().isAfter(limite))
-                .count());
+        // --- CRM / crédito (fuente única: CrmMetricsService) ---
+        res.setPromocionesActivas(crmMetricsService.contarPromocionesActivas());
+        res.setCampanasPendientes(crmMetricsService.contarCampanasPendientes());
+        res.setCrmPendientes(crmMetricsService.contarConversacionesPendientes());
+        res.setCuotasVencidas(crmMetricsService.contarCuotasVencidas());
+        res.setCuotasPorVencer(crmMetricsService.contarCuotasPorVencer());
 
         // --- Recientes ---
         res.setUltimosPedidos(pedidos.stream()
@@ -238,11 +205,6 @@ public class DashboardService {
                 .toList());
 
         return res;
-    }
-
-    private boolean pagoAprobado(Pago pago) {
-        String est = pago.getEstado();
-        return est == null || est.isBlank() || "APROBADO".equalsIgnoreCase(est);
     }
 
     private PedidoRecienteDto toPedidoReciente(Pedido p) {

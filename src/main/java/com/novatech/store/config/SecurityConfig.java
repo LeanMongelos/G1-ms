@@ -29,6 +29,7 @@ public class SecurityConfig {
     private static final String[] STAFF_ONLY = {
             "/usuarios/**",
             "/configuracion/**",
+            "/config/**",
             "/crm/**",
             "/facturas/**",
             "/presupuestos/**",
@@ -37,23 +38,13 @@ public class SecurityConfig {
             "/admin/**",
             "/dashboard/**",
             "/envios/**",
-            "/plantillas/**",
             "/listas-precios/**",
             "/campanas/**",
             "/promociones/**",
             "/ordenes-compra/**",
-            "/creditos/**",
             "/cuotas/**",
             "/planes/**",
-            "/auditoria/**",
-            "/logs/**",
-            "/emisor/**",
-            "/emisores/**",
-            "/alicuotas/**",
-            "/contabilidad/**",
-            "/catalogo-config/**",
             "/interacciones/**",
-            "/conversaciones/**",
             "/pagos/**",
             "/perfiles/**",
     };
@@ -78,8 +69,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/health", "/health/**", "/actuator/health").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/productos", "/productos/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categorias", "/categorias/**").permitAll()
                         .requestMatchers("/cliente/**").authenticated()
                         .requestMatchers(STAFF_ONLY).access((authentication, context) -> {
                             if (authentication.get() == null || !authentication.get().isAuthenticated()) {
@@ -91,6 +80,78 @@ public class SecurityConfig {
                             }
                             return new AuthorizationDecision(false);
                         })
+                        .requestMatchers(HttpMethod.GET, "/productos/stock-bajo").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.POST, "/productos", "/productos/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.PUT, "/productos/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.DELETE, "/productos/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.POST, "/categorias", "/categorias/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.PUT, "/categorias/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.DELETE, "/categorias/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esStaff(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
+                        .requestMatchers(HttpMethod.GET, "/productos", "/productos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categorias", "/categorias/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
