@@ -14,6 +14,7 @@ import com.novatech.store.repository.FacturaRepository;
 import com.novatech.store.repository.PagoRepository;
 import com.novatech.store.repository.PedidoRepository;
 import com.novatech.store.repository.PlanCuotasRepository;
+import com.novatech.store.util.PagoUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -74,15 +75,7 @@ public class PedidoService {
         List<Factura> facturas = facturaRepository.findByPedidoIdPedido(id);
 
         BigDecimal total = pedido.getTotal() == null ? BigDecimal.ZERO : pedido.getTotal();
-        BigDecimal pagado = pagos.stream()
-                .filter(p -> p.getEstado() != null && p.getEstado().equalsIgnoreCase("APROBADO"))
-                .map(Pago::getMonto)
-                .filter(m -> m != null)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal saldo = total.subtract(pagado);
-        if (saldo.compareTo(BigDecimal.ZERO) < 0) {
-            saldo = BigDecimal.ZERO;
-        }
+        BigDecimal saldo = PagoUtil.saldoPedido(total, pagos);
 
         PedidoDetalleResponse response = new PedidoDetalleResponse();
         response.setPedido(pedido);
