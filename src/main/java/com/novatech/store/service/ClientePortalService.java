@@ -4,6 +4,7 @@ import com.novatech.store.dto.ActualizarPerfilClienteRequest;
 import com.novatech.store.dto.ActualizarPerfilRequest;
 import com.novatech.store.dto.CrearTicketClienteRequest;
 import com.novatech.store.dto.EnviarMensajeTicketRequest;
+import com.novatech.store.dto.CuotaResumenDto;
 import com.novatech.store.dto.PedidoDetalleResponse;
 import com.novatech.store.dto.UsuarioResponse;
 import com.novatech.store.entity.Conversacion;
@@ -16,6 +17,7 @@ import com.novatech.store.exception.AccesoDenegadoException;
 import com.novatech.store.exception.ReglaNegocioException;
 import com.novatech.store.exception.ResourceNotFoundException;
 import com.novatech.store.repository.ConversacionRepository;
+import com.novatech.store.repository.CuotaRepository;
 import com.novatech.store.repository.FacturaRepository;
 import com.novatech.store.repository.MensajeConversacionRepository;
 import com.novatech.store.repository.PedidoRepository;
@@ -38,6 +40,7 @@ public class ClientePortalService {
     private final ConversacionRepository conversacionRepository;
     private final MensajeConversacionRepository mensajeRepository;
     private final SolicitudDevolucionService devolucionService;
+    private final CuotaRepository cuotaRepository;
 
     public ClientePortalService(PedidoService pedidoService,
                                 PedidoRepository pedidoRepository,
@@ -46,7 +49,8 @@ public class ClientePortalService {
                                 UsuarioService usuarioService,
                                 ConversacionRepository conversacionRepository,
                                 MensajeConversacionRepository mensajeRepository,
-                                SolicitudDevolucionService devolucionService) {
+                                SolicitudDevolucionService devolucionService,
+                                CuotaRepository cuotaRepository) {
         this.pedidoService = pedidoService;
         this.pedidoRepository = pedidoRepository;
         this.facturaRepository = facturaRepository;
@@ -55,6 +59,7 @@ public class ClientePortalService {
         this.conversacionRepository = conversacionRepository;
         this.mensajeRepository = mensajeRepository;
         this.devolucionService = devolucionService;
+        this.cuotaRepository = cuotaRepository;
     }
 
     private UsuarioResponse usuarioActual() {
@@ -207,6 +212,12 @@ public class ClientePortalService {
 
     public SolicitudDevolucion obtenerDevolucion(Integer id) {
         return devolucionService.obtener(id, usuarioActual().idUsuario());
+    }
+
+    public List<CuotaResumenDto> listarCuotas() {
+        return cuotaRepository.findByUsuario(usuarioActual().idUsuario()).stream()
+                .map(CuotaResumenDto::desde)
+                .toList();
     }
 
     private PerfilCliente crearPerfilBasico(UsuarioResponse u) {
