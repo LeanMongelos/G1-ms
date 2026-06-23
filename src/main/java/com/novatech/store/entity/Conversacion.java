@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -37,10 +38,12 @@ public class Conversacion {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cliente")
+    @JsonIgnoreProperties({"notas", "sitioWeb", "lat", "lng", "historialCrediticio"})
     private PerfilCliente cliente;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
+    @JsonIgnoreProperties({"usuario", "notas"})
     private Pedido pedido;
 
     @ManyToOne(fetch = FetchType.EAGER)

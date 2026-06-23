@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface FacturaRepository extends JpaRepository<Factura, Integer> {
 
+    List<Factura> findAllByOrderByFechaEmisionDescIdFacturaDesc();
+
     List<Factura> findByPedidoIdPedido(Integer idPedido);
 
     List<Factura> findByPresupuestoIdPresupuesto(Integer idPresupuesto);

@@ -1,6 +1,7 @@
 package com.novatech.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -22,6 +23,7 @@ public class ListaPrecioDetalle {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_producto", nullable = false)
+    @JsonIgnoreProperties({"imagen", "descripcion"})
     private Producto producto;
 
     /** Descuento % unitario (reemplaza el global para este producto). */

@@ -1,5 +1,7 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -18,11 +20,13 @@ public class PlanCuotas {
     // A que cliente pertenece el plan de cuotas.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cliente")
+    @JsonIgnoreProperties({"notas", "sitioWeb", "lat", "lng", "historialCrediticio", "usuario"})
     private PerfilCliente cliente;
 
     // A que pedido corresponde el plan de cuotas.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
+    @JsonIgnore
     private Pedido pedido;
 
     // En cuantas cuotas se va a pagar.
