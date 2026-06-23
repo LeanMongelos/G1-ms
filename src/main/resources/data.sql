@@ -152,6 +152,12 @@ UPDATE usuario SET contrasena = '$2a$10$5/A7KT9NtU4SAMeujmt83.dCGMni9DDkrzH9mY5C
 UPDATE usuario SET contrasena = '$2a$10$dxxZcXFu1jsKxgfTxpxCe.HkPXphC5Jm4K9p15yA2RQ7aPfYkjgiS', rol = 'CLIENTE'
   WHERE email = 'cliente@novatech.com';
 
+-- Usuario SUPERADMIN dedicado (misma clave demo: admin123)
+INSERT IGNORE INTO usuario (id_usuario, nombre, email, contrasena, rol, fecha_registro) VALUES
+  (99, 'Super Admin NovaTech', 'superadmin@novatech.com', '$2a$10$5/A7KT9NtU4SAMeujmt83.dCGMni9DDkrzH9mY5CAwKsIiRc9d/S2', 'SUPERADMIN', NOW());
+UPDATE usuario SET contrasena = '$2a$10$5/A7KT9NtU4SAMeujmt83.dCGMni9DDkrzH9mY5CAwKsIiRc9d/S2', rol = 'SUPERADMIN'
+  WHERE email = 'superadmin@novatech.com';
+
 -- Perfil de cliente (datos extra del usuario cliente)
 INSERT IGNORE INTO perfil_cliente (id_cliente, id_usuario, direccion, telefono, historial_crediticio, tipo_cliente) VALUES
   (1, 2, 'Av. Siempre Viva 742', '11-5555-1234', 700, 'CONSUMIDOR_FINAL');
