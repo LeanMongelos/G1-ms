@@ -2,6 +2,7 @@ package com.novatech.store.smoke;
 
 import com.novatech.store.entity.Carrito;
 import com.novatech.store.entity.Categoria;
+import com.novatech.store.entity.Conversacion;
 import com.novatech.store.entity.Cuota;
 import com.novatech.store.entity.DetalleCarrito;
 import com.novatech.store.entity.DetallePedido;
@@ -13,6 +14,7 @@ import com.novatech.store.entity.PlanCuotas;
 import com.novatech.store.entity.Producto;
 import com.novatech.store.entity.Resena;
 import com.novatech.store.entity.Usuario;
+import com.novatech.store.repository.ConversacionRepository;
 import com.novatech.store.repository.CarritoRepository;
 import com.novatech.store.repository.CategoriaRepository;
 import com.novatech.store.repository.CuotaRepository;
@@ -58,7 +60,8 @@ public class SmokeTestDataConfig {
             EnvioRepository envioRepository,
             ResenaRepository resenaRepository,
             PlanCuotasRepository planCuotasRepository,
-            CuotaRepository cuotaRepository) {
+            CuotaRepository cuotaRepository,
+            ConversacionRepository conversacionRepository) {
         return args -> {
             if (usuarioRepository.count() > 0) {
                 return;
@@ -142,6 +145,19 @@ public class SmokeTestDataConfig {
 
             saveCuota(cuotaRepository, plan, 1, new BigDecimal("34116.67"), LocalDate.now().minusDays(30), "PAGADA");
             saveCuota(cuotaRepository, plan, 2, new BigDecimal("34116.67"), LocalDate.now().plusDays(5), "PENDIENTE");
+
+            Conversacion ticket = new Conversacion();
+            ticket.setCanal("WEB");
+            ticket.setAsunto("Consulta demo smoke");
+            ticket.setContactoNombre(cliente.getNombre());
+            ticket.setContactoEmail(cliente.getEmail());
+            ticket.setEstado("PENDIENTE");
+            ticket.setCliente(perfil);
+            ticket.setPedido(pedido);
+            ticket.setVistaPrevia("Consulta demo");
+            ticket.setFechaCreacion(LocalDateTime.now());
+            ticket.setUltimaActividad(LocalDateTime.now());
+            conversacionRepository.save(ticket);
         };
     }
 

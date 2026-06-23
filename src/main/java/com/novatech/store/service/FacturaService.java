@@ -71,7 +71,7 @@ public class FacturaService {
     }
 
     public List<Factura> listar() {
-        return repository.findAll();
+        return repository.findAllByOrderByFechaEmisionDescIdFacturaDesc();
     }
 
     public Factura obtener(Integer id) {

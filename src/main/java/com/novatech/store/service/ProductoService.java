@@ -1,10 +1,13 @@
 package com.novatech.store.service;
 
 import com.novatech.store.entity.Producto;
+import com.novatech.store.exception.ReglaNegocioException;
 import com.novatech.store.exception.ResourceNotFoundException;
 import com.novatech.store.repository.ProductoRepository;
 import com.novatech.store.util.StockInventarioUtil;
 import java.util.List;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para los productos.
@@ -13,6 +16,9 @@ public class ProductoService {
 
     private final ProductoRepository repository;
     private final ListaPrecioService listaPrecioService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public ProductoService(ProductoRepository repository, ListaPrecioService listaPrecioService) {
         this.repository = repository;
@@ -114,6 +120,28 @@ public class ProductoService {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Producto no encontrado: " + id);
         }
+        if (countReferencias(id) > 0) {
+            throw new ReglaNegocioException(
+                    "No se puede eliminar: el producto está referenciado en pedidos, presupuestos, "
+                            + "listas de precios u otros registros.");
+        }
         repository.deleteById(id);
+    }
+
+    private long countReferencias(Integer id) {
+        List<String> consultas = List.of(
+                "SELECT COUNT(d) FROM DetallePedido d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(d) FROM DetallePresupuesto d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(d) FROM DetalleRemito d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(d) FROM DetalleFactura d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(d) FROM DetalleCarrito d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(d) FROM DetalleOrdenCompra d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(d) FROM ListaPrecioDetalle d WHERE d.producto.idProducto = :id",
+                "SELECT COUNT(r) FROM Resena r WHERE r.producto.idProducto = :id");
+        return consultas.stream()
+                .mapToLong(jpql -> entityManager.createQuery(jpql, Long.class)
+                        .setParameter("id", id)
+                        .getSingleResult())
+                .sum();
     }
 }

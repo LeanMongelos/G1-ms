@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,14 +19,17 @@ public class Factura {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
+    @JsonIgnoreProperties({"notas"})
     private Pedido pedido;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_presupuesto")
+    @JsonIgnoreProperties({"lineas", "cliente", "notas"})
     private Presupuesto presupuesto;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_remito")
+    @JsonIgnoreProperties({"lineas", "presupuesto", "pedido", "cliente", "notas"})
     private Remito remito;
 
     @Column(name = "numero_factura", unique = true)

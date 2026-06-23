@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class Presupuesto {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cliente")
+    @JsonIgnoreProperties({"notas", "sitioWeb", "lat", "lng", "historialCrediticio"})
     private PerfilCliente cliente;
 
     @Column(name = "fecha")

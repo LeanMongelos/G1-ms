@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,14 +20,17 @@ public class Remito {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
+    @JsonIgnoreProperties({"usuario", "notas"})
     private Pedido pedido;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_presupuesto")
+    @JsonIgnoreProperties({"lineas", "cliente", "notas"})
     private Presupuesto presupuesto;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cliente")
+    @JsonIgnoreProperties({"notas", "sitioWeb", "lat", "lng", "historialCrediticio"})
     private PerfilCliente cliente;
 
     @Column(name = "fecha")

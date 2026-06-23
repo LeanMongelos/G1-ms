@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /** Targeted regression tests for bugs that previously reached production. */
@@ -32,6 +33,44 @@ class RegressionSmokeTest extends SmokeTestBase {
         assertEquals(200, result.getResponse().getStatus());
         JsonNode json = MAPPER.readTree(result.getResponse().getContentAsString());
         assertTrue(json.isArray(), "remitos must return JSON array");
+    }
+
+    @Test
+    void facturasListReturnsParseableJsonWithoutHugePayload() throws Exception {
+        var builder = get("/facturas");
+        applyAuth(builder, SmokeAuth.STAFF);
+        MvcResult result = mockMvc.perform(builder).andReturn();
+        assertEquals(200, result.getResponse().getStatus());
+        String body = result.getResponse().getContentAsString();
+        JsonNode json = MAPPER.readTree(body);
+        assertTrue(json.isArray(), "facturas must return JSON array");
+        assertTrue(body.length() < 2_000_000, "facturas response suspiciously large");
+    }
+
+    @Test
+    void clientePedidosAndPerfilReturnJsonForCliente() throws Exception {
+        var pedidos = get("/cliente/pedidos");
+        applyAuth(pedidos, SmokeAuth.CLIENTE);
+        MvcResult pedidosResult = mockMvc.perform(pedidos).andReturn();
+        assertEquals(200, pedidosResult.getResponse().getStatus());
+        assertTrue(MAPPER.readTree(pedidosResult.getResponse().getContentAsString()).isArray());
+
+        var perfil = get("/cliente/perfil");
+        applyAuth(perfil, SmokeAuth.CLIENTE);
+        MvcResult perfilResult = mockMvc.perform(perfil).andReturn();
+        assertEquals(200, perfilResult.getResponse().getStatus());
+        assertTrue(MAPPER.readTree(perfilResult.getResponse().getContentAsString()).isObject());
+    }
+
+    @Test
+    void deleteProductoReferenciadoReturns400Not500() throws Exception {
+        var builder = delete("/productos/1");
+        applyAuth(builder, SmokeAuth.STAFF);
+        MvcResult result = mockMvc.perform(builder).andReturn();
+        int status = result.getResponse().getStatus();
+        assertTrue(status == 400 || status == 409,
+                "referenced product delete should return 400/409, got " + status);
+        assertTrue(result.getResponse().getContentType().contains("application/json"));
     }
 
     @Test

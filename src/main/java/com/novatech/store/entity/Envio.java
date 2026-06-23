@@ -1,5 +1,6 @@
 package com.novatech.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class Envio {
     // A que pedido corresponde este envio.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
+    @JsonIgnore
     private Pedido pedido;
 
     // Direccion a donde se manda el pedido. Es obligatoria y no puede ir vacia.

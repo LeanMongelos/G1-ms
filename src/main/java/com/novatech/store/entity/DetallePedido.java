@@ -1,6 +1,7 @@
 package com.novatech.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -25,6 +26,7 @@ public class DetallePedido {
     // Que producto se compro en este renglon.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_producto")
+    @JsonIgnoreProperties({"imagen", "descripcion"})
     private Producto producto;
 
     // Cantidad de unidades compradas.
