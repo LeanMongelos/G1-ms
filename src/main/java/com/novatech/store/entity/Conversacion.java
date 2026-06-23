@@ -40,6 +40,10 @@ public class Conversacion {
     private PerfilCliente cliente;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_asignado")
     private Usuario asignadoA;
 
@@ -125,6 +129,14 @@ public class Conversacion {
 
     public void setCliente(PerfilCliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public Usuario getAsignadoA() {
