@@ -31,12 +31,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class DashboardService {
 
-    private static final int UMBRAL_STOCK_BAJO = 5;
-
     private final PedidoRepository pedidoRepository;
     private final PagoRepository pagoRepository;
     private final FacturaRepository facturaRepository;
     private final ProductoRepository productoRepository;
+    private final ProductoService productoService;
     private final PromocionRepository promocionRepository;
     private final CampanaRepository campanaRepository;
     private final CuotaRepository cuotaRepository;
@@ -47,6 +46,7 @@ public class DashboardService {
                             PagoRepository pagoRepository,
                             FacturaRepository facturaRepository,
                             ProductoRepository productoRepository,
+                            ProductoService productoService,
                             PromocionRepository promocionRepository,
                             CampanaRepository campanaRepository,
                             CuotaRepository cuotaRepository,
@@ -56,6 +56,7 @@ public class DashboardService {
         this.pagoRepository = pagoRepository;
         this.facturaRepository = facturaRepository;
         this.productoRepository = productoRepository;
+        this.productoService = productoService;
         this.promocionRepository = promocionRepository;
         this.campanaRepository = campanaRepository;
         this.cuotaRepository = cuotaRepository;
@@ -141,11 +142,19 @@ public class DashboardService {
         // --- Cobranza ---
         BigDecimal cobradoTotal = BigDecimal.ZERO;
         BigDecimal cobradoMes = BigDecimal.ZERO;
+        Map<Integer, BigDecimal> pagosPorPedido = new HashMap<>();
         for (Pago pago : pagos) {
+            if (!pagoAprobado(pago)) {
+                continue;
+            }
             BigDecimal monto = pago.getMonto() != null ? pago.getMonto() : BigDecimal.ZERO;
             cobradoTotal = cobradoTotal.add(monto);
             if (pago.getFechaPago() != null && !pago.getFechaPago().isBefore(inicioMes)) {
                 cobradoMes = cobradoMes.add(monto);
+            }
+            if (pago.getPedido() != null && pago.getPedido().getIdPedido() != null) {
+                int id = pago.getPedido().getIdPedido();
+                pagosPorPedido.merge(id, monto, BigDecimal::add);
             }
         }
         res.setCobradoTotal(cobradoTotal);
@@ -154,7 +163,14 @@ public class DashboardService {
         res.setPagosPendientesAprobar(pagos.stream()
                 .filter(p -> "PENDIENTE".equalsIgnoreCase(p.getEstado()))
                 .count());
-        res.setCarteraPendiente(ventasTotales.subtract(cobradoTotal).max(BigDecimal.ZERO));
+
+        BigDecimal cartera = BigDecimal.ZERO;
+        for (Pedido p : pedidos) {
+            BigDecimal total = p.getTotal() != null ? p.getTotal() : BigDecimal.ZERO;
+            BigDecimal pagado = pagosPorPedido.getOrDefault(p.getIdPedido(), BigDecimal.ZERO);
+            cartera = cartera.add(total.subtract(pagado).max(BigDecimal.ZERO));
+        }
+        res.setCarteraPendiente(cartera);
 
         // --- Facturación ---
         BigDecimal facturadoTotal = BigDecimal.ZERO;
@@ -184,9 +200,7 @@ public class DashboardService {
 
         // --- Catálogo ---
         res.setProductosTotal(productos.size());
-        res.setProductosBajoStock(productos.stream()
-                .filter(p -> p.getStock() != null && p.getStock() < UMBRAL_STOCK_BAJO)
-                .count());
+        res.setProductosBajoStock(productoService.contarStockBajo());
 
         // --- CRM / crédito ---
         res.setPromocionesActivas(promocionRepository.findAll().stream()
@@ -224,6 +238,11 @@ public class DashboardService {
                 .toList());
 
         return res;
+    }
+
+    private boolean pagoAprobado(Pago pago) {
+        String est = pago.getEstado();
+        return est == null || est.isBlank() || "APROBADO".equalsIgnoreCase(est);
     }
 
     private PedidoRecienteDto toPedidoReciente(Pedido p) {
