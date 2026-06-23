@@ -80,6 +80,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/health", "/health/**", "/actuator/health").permitAll()
                         .requestMatchers(HttpMethod.GET, "/productos", "/productos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/categorias", "/categorias/**").permitAll()
+                        .requestMatchers("/cliente/**").authenticated()
                         .requestMatchers(STAFF_ONLY).access((authentication, context) -> {
                             if (authentication.get() == null || !authentication.get().isAuthenticated()) {
                                 return new AuthorizationDecision(false);
