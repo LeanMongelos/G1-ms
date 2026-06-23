@@ -72,6 +72,7 @@ public class ClientePortalService {
     }
 
     private UsuarioResponse usuarioActual() {
+        SecurityUtils.requerirCliente();
         return SecurityUtils.requerirAutenticado();
     }
 

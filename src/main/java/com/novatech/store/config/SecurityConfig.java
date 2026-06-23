@@ -69,7 +69,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/health", "/health/**", "/actuator/health").permitAll()
-                        .requestMatchers("/cliente/**").authenticated()
+                        .requestMatchers("/cliente/**").access((authentication, context) -> {
+                            if (authentication.get() == null || !authentication.get().isAuthenticated()) {
+                                return new AuthorizationDecision(false);
+                            }
+                            var principal = authentication.get().getPrincipal();
+                            if (principal instanceof com.novatech.store.dto.UsuarioResponse u) {
+                                return new AuthorizationDecision(SecurityUtils.esCliente(u.rol()));
+                            }
+                            return new AuthorizationDecision(false);
+                        })
                         .requestMatchers(STAFF_ONLY).access((authentication, context) -> {
                             if (authentication.get() == null || !authentication.get().isAuthenticated()) {
                                 return new AuthorizationDecision(false);
