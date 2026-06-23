@@ -1,6 +1,9 @@
 package com.novatech.store.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 // Esta clase representa la tabla "Resena" (una resena/opinion de un producto).
@@ -25,11 +28,12 @@ public class Resena {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    // Comentario que escribio el usuario.
+    @Size(max = 2000, message = "El comentario no puede superar 2000 caracteres.")
     @Column(name = "comentario", columnDefinition = "TEXT")
     private String comentario;
 
-    // Puntuacion del 1 al 5 (las estrellitas).
+    @Min(value = 1, message = "La puntuacion minima es 1.")
+    @Max(value = 5, message = "La puntuacion maxima es 5.")
     @Column(name = "puntuacion")
     private Integer puntuacion;
 

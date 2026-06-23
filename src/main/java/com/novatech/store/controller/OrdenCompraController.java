@@ -3,6 +3,7 @@ package com.novatech.store.controller;
 import com.novatech.store.dto.GenerarOrdenCompraRequest;
 import com.novatech.store.entity.OrdenCompra;
 import com.novatech.store.service.OrdenCompraService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class OrdenCompraController {
     }
 
     @PostMapping("/generar")
-    public ResponseEntity<List<OrdenCompra>> generar(@RequestBody GenerarOrdenCompraRequest req) {
+    public ResponseEntity<List<OrdenCompra>> generar(@Valid @RequestBody GenerarOrdenCompraRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.generarParaProductos(req.getProductoIds()));
     }

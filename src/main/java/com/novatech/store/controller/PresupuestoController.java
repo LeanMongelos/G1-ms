@@ -3,6 +3,7 @@ package com.novatech.store.controller;
 import com.novatech.store.dto.PresupuestoRequest;
 import com.novatech.store.entity.Presupuesto;
 import com.novatech.store.service.PresupuestoService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +30,12 @@ public class PresupuestoController {
     }
 
     @PostMapping
-    public ResponseEntity<Presupuesto> crear(@RequestBody PresupuestoRequest request) {
+    public ResponseEntity<Presupuesto> crear(@Valid @RequestBody PresupuestoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(request));
     }
 
     @PutMapping("/{id}")
-    public Presupuesto actualizar(@PathVariable Integer id, @RequestBody PresupuestoRequest request) {
+    public Presupuesto actualizar(@PathVariable Integer id, @Valid @RequestBody PresupuestoRequest request) {
         return service.actualizar(id, request);
     }
 

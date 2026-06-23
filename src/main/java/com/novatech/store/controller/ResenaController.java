@@ -2,6 +2,7 @@ package com.novatech.store.controller;
 
 import com.novatech.store.entity.Resena;
 import com.novatech.store.service.ResenaService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +37,13 @@ public class ResenaController {
 
     // POST /resenas -> crea una resena.
     @PostMapping
-    public ResponseEntity<Resena> crear(@RequestBody Resena resena) {
+    public ResponseEntity<Resena> crear(@Valid @RequestBody Resena resena) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(resena));
     }
 
     // PUT /resenas/5 -> actualiza una resena.
     @PutMapping("/{id}")
-    public Resena actualizar(@PathVariable Integer id, @RequestBody Resena resena) {
+    public Resena actualizar(@PathVariable Integer id, @Valid @RequestBody Resena resena) {
         return service.actualizar(id, resena);
     }
 

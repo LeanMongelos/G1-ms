@@ -1,14 +1,30 @@
 package com.novatech.store.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public class RemitoRequest {
 
+    @Positive(message = "El id del cliente debe ser positivo.")
     private Integer idCliente;
+
+    @Positive(message = "El id del pedido debe ser positivo.")
     private Integer pedidoId;
+
+    @Positive(message = "El id del presupuesto debe ser positivo.")
     private Integer presupuestoId;
+
+    @Size(max = 300, message = "La direccion de entrega no puede superar 300 caracteres.")
     private String direccionEntrega;
+
+    @Size(max = 500, message = "Las notas no pueden superar 500 caracteres.")
     private String notas;
+
+    @NotEmpty(message = "El remito debe tener al menos una linea.")
+    @Valid
     private List<LineaComprobanteDto> lineas;
 
     public Integer getIdCliente() {

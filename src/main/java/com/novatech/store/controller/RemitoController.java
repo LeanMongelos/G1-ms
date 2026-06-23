@@ -3,6 +3,7 @@ package com.novatech.store.controller;
 import com.novatech.store.dto.RemitoRequest;
 import com.novatech.store.entity.Remito;
 import com.novatech.store.service.RemitoService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class RemitoController {
     }
 
     @PostMapping
-    public ResponseEntity<Remito> crear(@RequestBody RemitoRequest request) {
+    public ResponseEntity<Remito> crear(@Valid @RequestBody RemitoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(request));
     }
 
@@ -50,7 +51,7 @@ public class RemitoController {
     }
 
     @PutMapping("/{id}")
-    public Remito actualizar(@PathVariable Integer id, @RequestBody RemitoRequest request) {
+    public Remito actualizar(@PathVariable Integer id, @Valid @RequestBody RemitoRequest request) {
         return service.actualizar(id, request);
     }
 

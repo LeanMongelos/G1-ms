@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 // Anotaciones de Bean Validation (Jakarta) para validar los datos de entrada.
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 // BigDecimal se usa para guardar plata. Es mejor que double porque no pierde decimales.
 import java.math.BigDecimal;
 
@@ -21,18 +23,16 @@ public class Producto {
 
     // Nombre del producto. Es obligatorio y no puede ir vacio.
     @NotBlank(message = "El nombre del producto es obligatorio.")
+    @Size(min = 2, max = 200, message = "El nombre debe tener entre 2 y 200 caracteres.")
     @Column(name = "nombre")
     private String nombre;
 
-    // Descripcion larga del producto.
+    @Size(max = 5000, message = "La descripcion no puede superar 5000 caracteres.")
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-    // Precio del producto. precision = 12 y scale = 2 significa hasta 12 numeros en total
-    // y 2 despues de la coma (por ejemplo 1234567890.99).
-    // Es obligatorio y no puede ser negativo.
     @NotNull(message = "El precio es obligatorio.")
-    @PositiveOrZero(message = "El precio no puede ser negativo.")
+    @Positive(message = "El precio debe ser mayor a cero.")
     @Column(name = "precio", precision = 12, scale = 2)
     private BigDecimal precio;
 
@@ -58,7 +58,7 @@ public class Producto {
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-    // Nombre del proveedor que nos vende este producto.
+    @Size(max = 200, message = "El proveedor no puede superar 200 caracteres.")
     @Column(name = "proveedor")
     private String proveedor;
 

@@ -1,14 +1,27 @@
 package com.novatech.store.dto;
 
 import com.novatech.store.entity.Presupuesto;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
 public class PresupuestoRequest {
 
+    @NotNull(message = "El id del cliente es obligatorio.")
+    @Positive(message = "El id del cliente debe ser positivo.")
     private Integer idCliente;
+
     private LocalDate validezHasta;
+
+    @Size(max = 500, message = "Las notas no pueden superar 500 caracteres.")
     private String notas;
+
+    @NotEmpty(message = "El presupuesto debe tener al menos una linea.")
+    @Valid
     private List<LineaComprobanteDto> lineas;
 
     public Integer getIdCliente() {

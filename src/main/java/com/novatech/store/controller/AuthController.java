@@ -46,13 +46,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegistroRequest datos) {
-        if (datos.email() == null || datos.email().isBlank()
-                || datos.contrasena() == null || datos.contrasena().isBlank()
-                || datos.nombre() == null || datos.nombre().isBlank()) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("message", "Faltan datos: nombre, email y contrasena son obligatorios."));
-        }
-
         if (usuarioRepository.findByEmail(datos.email()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("message", "Ya existe una cuenta con ese email."));
