@@ -8,6 +8,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuración Spring `ListaPrecioSeeder`: beans, seguridad, seeders o ajustes de arranque.
+ */
 @Configuration
 public class ListaPrecioSeeder {
 

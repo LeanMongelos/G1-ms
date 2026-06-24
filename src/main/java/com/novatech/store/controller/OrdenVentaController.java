@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/ordenes")
+/**
+ * Controlador REST `OrdenVentaController`: expone endpoints HTTP JSON para OrdenVenta. Ruta base en `@RequestMapping` de la clase.
+ */
 public class OrdenVentaController {
 
     private final OrdenVentaService service;

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/config/emisores")
+/**
+ * Controlador REST `EmisorController`: expone endpoints HTTP JSON para Emisor. Ruta base en `@RequestMapping` de la clase.
+ */
 public class EmisorController {
 
     private final EmisorService service;

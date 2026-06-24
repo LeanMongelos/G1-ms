@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ordenes-compra")
+/**
+ * Controlador REST `OrdenCompraController`: expone endpoints HTTP JSON para OrdenCompra. Ruta base en `@RequestMapping` de la clase.
+ */
 public class OrdenCompraController {
 
     private final OrdenCompraService service;

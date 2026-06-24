@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/dashboard")
+/**
+ * Controlador REST `DashboardController`: expone endpoints HTTP JSON para Dashboard. Ruta base en `@RequestMapping` de la clase.
+ */
 public class DashboardController {
 
     private final DashboardService service;

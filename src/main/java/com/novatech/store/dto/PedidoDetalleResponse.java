@@ -8,6 +8,9 @@ import com.novatech.store.entity.PlanCuotas;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * DTO `PedidoDetalleResponse`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class PedidoDetalleResponse {
 
     private Pedido pedido;

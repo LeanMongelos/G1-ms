@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/interacciones")
+/**
+ * Controlador REST `InteraccionCrmController`: expone endpoints HTTP JSON para InteraccionCrm. Ruta base en `@RequestMapping` de la clase.
+ */
 public class InteraccionCrmController {
 
     private final InteraccionCrmService service;

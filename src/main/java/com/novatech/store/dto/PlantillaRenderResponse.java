@@ -1,5 +1,8 @@
 package com.novatech.store.dto;
 
+/**
+ * DTO `PlantillaRenderResponse`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class PlantillaRenderResponse {
 
     private String html;

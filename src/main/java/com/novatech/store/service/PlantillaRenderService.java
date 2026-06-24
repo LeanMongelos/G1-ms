@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Servicio `PlantillaRenderService`: reglas de negocio, transacciones y orquestación de PlantillaRender. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class PlantillaRenderService {
 

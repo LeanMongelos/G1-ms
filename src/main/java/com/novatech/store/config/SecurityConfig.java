@@ -21,6 +21,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * Configuración Spring `SecurityConfig`: beans, seguridad, seeders o ajustes de arranque.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 // Repositorio para las resenas.
+/**
+ * Repositorio JPA `ResenaRepository`: consultas y persistencia de entidad Resena en MySQL.
+ */
 public interface ResenaRepository extends JpaRepository<Resena, Integer> {
 
     // Buscar todas las resenas de un producto.

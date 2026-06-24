@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/listas-precios")
+/**
+ * Controlador REST `ListaPrecioController`: expone endpoints HTTP JSON para ListaPrecio. Ruta base en `@RequestMapping` de la clase.
+ */
 public class ListaPrecioController {
 
     private final ListaPrecioService service;

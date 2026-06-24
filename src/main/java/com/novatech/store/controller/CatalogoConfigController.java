@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/config/catalogos")
+/**
+ * Controlador REST `CatalogoConfigController`: expone endpoints HTTP JSON para CatalogoConfig. Ruta base en `@RequestMapping` de la clase.
+ */
 public class CatalogoConfigController {
 
     private final CatalogoConfigService service;

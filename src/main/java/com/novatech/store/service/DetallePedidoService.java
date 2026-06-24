@@ -7,6 +7,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para los renglones del pedido.
+/**
+ * Servicio `DetallePedidoService`: reglas de negocio, transacciones y orquestación de DetallePedido. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class DetallePedidoService {
 

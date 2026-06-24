@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Servicio `ClientePortalService`: reglas de negocio, transacciones y orquestación de ClientePortal. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class ClientePortalService {
 

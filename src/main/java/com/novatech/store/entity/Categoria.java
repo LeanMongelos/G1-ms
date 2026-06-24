@@ -11,6 +11,9 @@ import jakarta.validation.constraints.Size;
 @Entity
 // La tabla se va a llamar "Categoria".
 @Table(name = "Categoria")
+/**
+ * Entidad JPA `Categoria`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Categoria {
 
     // Clave primaria: identifica de forma unica a cada categoria.

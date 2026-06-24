@@ -15,6 +15,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `CrmMetricsService`: reglas de negocio, transacciones y orquestación de CrmMetrics. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class CrmMetricsService {
 

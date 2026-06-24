@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repositorio JPA `CuotaRepository`: consultas y persistencia de entidad Cuota en MySQL.
+ */
 public interface CuotaRepository extends JpaRepository<Cuota, Integer> {
 
     List<Cuota> findByPlanIdPlan(Integer idPlan);

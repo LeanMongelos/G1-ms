@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repositorio JPA `FacturaRepository`: consultas y persistencia de entidad Factura en MySQL.
+ */
 public interface FacturaRepository extends JpaRepository<Factura, Integer> {
 
     List<Factura> findAllByOrderByFechaEmisionDescIdFacturaDesc();

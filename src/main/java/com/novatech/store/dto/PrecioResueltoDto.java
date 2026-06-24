@@ -2,6 +2,9 @@ package com.novatech.store.dto;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO `PrecioResueltoDto`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class PrecioResueltoDto {
 
     private Integer idProducto;

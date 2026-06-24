@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `DashboardService`: reglas de negocio, transacciones y orquestación de Dashboard. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class DashboardService {
 

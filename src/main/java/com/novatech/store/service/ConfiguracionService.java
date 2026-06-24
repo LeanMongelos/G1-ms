@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `ConfiguracionService`: reglas de negocio, transacciones y orquestación de Configuracion. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class ConfiguracionService {
 

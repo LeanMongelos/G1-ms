@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * DTO `PresupuestoRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class PresupuestoRequest {
 
     @NotNull(message = "El id del cliente es obligatorio.")

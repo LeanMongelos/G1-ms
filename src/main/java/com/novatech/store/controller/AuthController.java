@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+/**
+ * Controlador REST `AuthController`: expone endpoints HTTP JSON para Auth. Ruta base en `@RequestMapping` de la clase.
+ */
 public class AuthController {
 
     private final UsuarioRepository usuarioRepository;

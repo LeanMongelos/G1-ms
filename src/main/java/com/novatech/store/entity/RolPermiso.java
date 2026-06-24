@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "RolPermiso", uniqueConstraints = @UniqueConstraint(columnNames = {"rol_clave", "permiso_clave"}))
+/**
+ * Entidad JPA `RolPermiso`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class RolPermiso {
 
     @Id

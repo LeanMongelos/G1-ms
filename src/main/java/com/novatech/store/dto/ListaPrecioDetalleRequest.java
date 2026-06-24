@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
+/**
+ * DTO `ListaPrecioDetalleRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class ListaPrecioDetalleRequest {
 
     @NotNull(message = "El id del producto es obligatorio.")

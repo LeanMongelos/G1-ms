@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 // Esta clase representa la tabla "Producto".
 @Entity
 @Table(name = "Producto")
+/**
+ * Entidad JPA `Producto`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Producto {
 
     // Identificador unico del producto.

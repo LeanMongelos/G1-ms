@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 @Entity
 // @Table sirve para elegir el nombre que va a tener la tabla en MySQL.
 @Table(name = "Usuario")
+/**
+ * Entidad JPA `Usuario`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Usuario {
 
     // @Id marca cual es la clave primaria, o sea el dato que identifica de forma unica a cada fila.

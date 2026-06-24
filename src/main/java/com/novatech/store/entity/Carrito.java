@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 // Es el carrito de compras de un usuario.
 @Entity
 @Table(name = "Carrito")
+/**
+ * Entidad JPA `Carrito`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Carrito {
 
     // Identificador unico del carrito.

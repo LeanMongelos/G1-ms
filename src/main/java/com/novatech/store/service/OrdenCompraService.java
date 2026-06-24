@@ -17,6 +17,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Servicio `OrdenCompraService`: reglas de negocio, transacciones y orquestación de OrdenCompra. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class OrdenCompraService {
 

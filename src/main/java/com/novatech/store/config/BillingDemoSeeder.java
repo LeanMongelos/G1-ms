@@ -15,6 +15,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuración Spring `BillingDemoSeeder`: beans, seguridad, seeders o ajustes de arranque.
+ */
 @Configuration
 public class BillingDemoSeeder {
 

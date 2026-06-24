@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Servicio `RbacService`: reglas de negocio, transacciones y orquestación de Rbac. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class RbacService {
 

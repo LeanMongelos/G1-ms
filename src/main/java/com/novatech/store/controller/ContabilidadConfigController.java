@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/config/contabilidad")
+/**
+ * Controlador REST `ContabilidadConfigController`: expone endpoints HTTP JSON para ContabilidadConfig. Ruta base en `@RequestMapping` de la clase.
+ */
 public class ContabilidadConfigController {
 
     private final ContabilidadConfigService service;

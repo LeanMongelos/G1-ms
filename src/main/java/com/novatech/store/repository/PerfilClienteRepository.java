@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repositorio JPA `PerfilClienteRepository`: consultas y persistencia de entidad PerfilCliente en MySQL.
+ */
 public interface PerfilClienteRepository extends JpaRepository<PerfilCliente, Integer> {
 
     Optional<PerfilCliente> findByUsuario_IdUsuario(Integer idUsuario);

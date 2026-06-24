@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para las resenas.
+/**
+ * Servicio `ResenaService`: reglas de negocio, transacciones y orquestación de Resena. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class ResenaService {
 

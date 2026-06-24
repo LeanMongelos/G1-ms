@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/usuarios")
+/**
+ * Controlador REST `UsuarioController`: expone endpoints HTTP JSON para Usuario. Ruta base en `@RequestMapping` de la clase.
+ */
 public class UsuarioController {
 
     private final UsuarioService service;

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Servicio `PlantillaService`: reglas de negocio, transacciones y orquestación de Plantilla. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class PlantillaService {
 

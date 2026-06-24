@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de productos. Todas las rutas empiezan con /productos.
 @RestController
 @RequestMapping("/productos")
+/**
+ * Controlador REST `ProductoController`: expone endpoints HTTP JSON para Producto. Ruta base en `@RequestMapping` de la clase.
+ */
 public class ProductoController {
 
     private final ProductoService service;

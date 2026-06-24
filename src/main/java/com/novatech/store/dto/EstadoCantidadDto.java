@@ -1,5 +1,8 @@
 package com.novatech.store.dto;
 
+/**
+ * DTO `EstadoCantidadDto`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class EstadoCantidadDto {
 
     private String estado;

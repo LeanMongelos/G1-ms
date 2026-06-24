@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DetalleRemito")
+/**
+ * Entidad JPA `DetalleRemito`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class DetalleRemito {
 
     @Id

@@ -20,6 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Servicio `CobranzaCrmService`: reglas de negocio, transacciones y orquestación de CobranzaCrm. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class CobranzaCrmService {
 

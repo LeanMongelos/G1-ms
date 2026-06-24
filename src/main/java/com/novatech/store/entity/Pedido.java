@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 // Un pedido es una compra que hace un usuario.
 @Entity
 @Table(name = "Pedido")
+/**
+ * Entidad JPA `Pedido`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Pedido {
 
     // Identificador unico del pedido.

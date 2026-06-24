@@ -18,6 +18,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Servicio `ConversacionService`: reglas de negocio, transacciones y orquestación de Conversacion. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class ConversacionService {
 

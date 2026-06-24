@@ -8,6 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // disponible para toda la app: el "encriptador" de contrasenas.
 // @Configuration le avisa a Spring que aca adentro hay objetos que tiene que
 // crear y guardar para prestarselos a quien los necesite (inyeccion de dependencias).
+/**
+ * Configuración Spring `PasswordConfig`: beans, seguridad, seeders o ajustes de arranque.
+ */
 @Configuration
 public class PasswordConfig {
 

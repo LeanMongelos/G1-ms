@@ -2,6 +2,9 @@ package com.novatech.store.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO `AdminNotificacionDto`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class AdminNotificacionDto {
 
     private String tipo;

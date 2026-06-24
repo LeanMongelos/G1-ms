@@ -3,6 +3,9 @@ package com.novatech.store.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * DTO `ConfirmarOrdenLineaRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class ConfirmarOrdenLineaRequest {
 
     @NotNull(message = "El id del producto es obligatorio.")

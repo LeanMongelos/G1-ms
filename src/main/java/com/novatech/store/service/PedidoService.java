@@ -21,6 +21,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para los pedidos.
+/**
+ * Servicio `PedidoService`: reglas de negocio, transacciones y orquestación de Pedido. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class PedidoService {
 

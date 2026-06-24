@@ -5,6 +5,9 @@ import com.novatech.store.entity.Pago;
 import com.novatech.store.entity.Pedido;
 import com.novatech.store.entity.PlanCuotas;
 
+/**
+ * DTO `ConfirmarOrdenResponse`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class ConfirmarOrdenResponse {
 
     private Pedido pedido;

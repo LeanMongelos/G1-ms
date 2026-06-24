@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pedidos")
+/**
+ * Controlador REST `PedidoController`: expone endpoints HTTP JSON para Pedido. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PedidoController {
 
     private final PedidoService service;

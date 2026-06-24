@@ -1,5 +1,8 @@
 package com.novatech.store.dto;
 
+/**
+ * DTO `CrmResumenResponse`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class CrmResumenResponse {
 
     private long clientesActivos;

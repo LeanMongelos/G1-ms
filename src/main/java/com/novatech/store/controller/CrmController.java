@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/crm")
+/**
+ * Controlador REST `CrmController`: expone endpoints HTTP JSON para Crm. Ruta base en `@RequestMapping` de la clase.
+ */
 public class CrmController {
 
     private final CrmService service;

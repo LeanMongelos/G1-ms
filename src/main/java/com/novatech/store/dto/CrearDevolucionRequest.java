@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO `CrearDevolucionRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public record CrearDevolucionRequest(
         @NotNull(message = "El id del pedido es obligatorio.")
         @Positive(message = "El id del pedido debe ser positivo.")

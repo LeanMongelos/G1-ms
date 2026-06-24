@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repositorio JPA `RegistroAuditoriaRepository`: consultas y persistencia de entidad RegistroAuditoria en MySQL.
+ */
 public interface RegistroAuditoriaRepository extends JpaRepository<RegistroAuditoria, Integer> {
 
     List<RegistroAuditoria> findTop50ByOrderByFechaDesc();

@@ -7,6 +7,9 @@ import com.novatech.store.repository.IntegracionCanalRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `IntegracionCanalService`: reglas de negocio, transacciones y orquestación de IntegracionCanal. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class IntegracionCanalService {
 

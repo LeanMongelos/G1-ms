@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 // Guarda el plan de pago en cuotas de un pedido para un cliente.
 @Entity
 @Table(name = "PlanCuotas")
+/**
+ * Entidad JPA `PlanCuotas`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class PlanCuotas {
 
     // Identificador unico del plan de cuotas.

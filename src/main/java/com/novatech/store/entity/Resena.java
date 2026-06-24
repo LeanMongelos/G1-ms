@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 // En el DER aparece como "Resena"; le sacamos la enie para evitar problemas de codificacion.
 @Entity
 @Table(name = "Resena")
+/**
+ * Entidad JPA `Resena`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Resena {
 
     // Identificador unico de la resena.

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cuotas")
+/**
+ * Controlador REST `CuotaController`: expone endpoints HTTP JSON para Cuota. Ruta base en `@RequestMapping` de la clase.
+ */
 public class CuotaController {
 
     private final CuotaService service;

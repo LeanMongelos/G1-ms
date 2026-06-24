@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * Repositorio JPA `ListaPrecioDetalleRepository`: consultas y persistencia de entidad ListaPrecioDetalle en MySQL.
+ */
 public interface ListaPrecioDetalleRepository extends JpaRepository<ListaPrecioDetalle, Integer> {
 
     List<ListaPrecioDetalle> findByListaPrecioIdListaPrecioOrderByProductoNombreAsc(Integer idLista);

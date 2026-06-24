@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/campanas")
+/**
+ * Controlador REST `CampanaController`: expone endpoints HTTP JSON para Campana. Ruta base en `@RequestMapping` de la clase.
+ */
 public class CampanaController {
 
     private final CampanaService service;

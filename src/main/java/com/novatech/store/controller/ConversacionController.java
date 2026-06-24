@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/crm/conversaciones")
+/**
+ * Controlador REST `ConversacionController`: expone endpoints HTTP JSON para Conversacion. Ruta base en `@RequestMapping` de la clase.
+ */
 public class ConversacionController {
 
     private final ConversacionService service;

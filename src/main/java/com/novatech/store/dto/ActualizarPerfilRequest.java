@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO `ActualizarPerfilRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public record ActualizarPerfilRequest(
         @NotBlank(message = "El nombre es obligatorio.")
         @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres.")

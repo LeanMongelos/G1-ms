@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para los usuarios.
+/**
+ * Servicio `UsuarioService`: reglas de negocio, transacciones y orquestación de Usuario. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class UsuarioService {
 

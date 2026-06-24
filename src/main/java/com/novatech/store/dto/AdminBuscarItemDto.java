@@ -1,5 +1,8 @@
 package com.novatech.store.dto;
 
+/**
+ * DTO `AdminBuscarItemDto`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class AdminBuscarItemDto {
 
     private String tipo;
