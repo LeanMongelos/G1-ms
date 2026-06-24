@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/perfiles")
+/**
+ * Controlador REST `PerfilClienteController`: expone endpoints HTTP JSON para PerfilCliente. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PerfilClienteController {
 
     private final PerfilClienteService service;

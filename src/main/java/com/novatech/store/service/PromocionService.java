@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `PromocionService`: reglas de negocio, transacciones y orquestación de Promocion. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class PromocionService {
 

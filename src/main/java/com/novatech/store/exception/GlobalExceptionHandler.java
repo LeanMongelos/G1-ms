@@ -20,6 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 // @RestControllerAdvice atrapa los errores de TODOS los controllers en un solo lugar.
 // Asi, cuando algo falla, el frontend siempre recibe un JSON ordenado en vez de un error feo.
+/**
+ * Manejo de excepciones `GlobalExceptionHandler`: respuestas HTTP uniformes ante errores.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

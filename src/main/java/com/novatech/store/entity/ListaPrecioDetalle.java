@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 @Table(name = "ListaPrecioDetalle", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"id_lista_precio", "id_producto"})
 })
+/**
+ * Entidad JPA `ListaPrecioDetalle`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class ListaPrecioDetalle {
 
     @Id

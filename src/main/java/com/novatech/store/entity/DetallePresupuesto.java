@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "DetallePresupuesto")
+/**
+ * Entidad JPA `DetallePresupuesto`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class DetallePresupuesto {
 
     @Id

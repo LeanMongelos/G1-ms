@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
+/**
+ * DTO `ListaPrecioUpdateRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class ListaPrecioUpdateRequest {
 
     @Size(max = 100, message = "El nombre no puede superar 100 caracteres.")

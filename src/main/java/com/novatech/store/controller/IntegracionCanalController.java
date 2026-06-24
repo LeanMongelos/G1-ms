@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/crm/integraciones")
+/**
+ * Controlador REST `IntegracionCanalController`: expone endpoints HTTP JSON para IntegracionCanal. Ruta base en `@RequestMapping` de la clase.
+ */
 public class IntegracionCanalController {
 
     private final IntegracionCanalService service;

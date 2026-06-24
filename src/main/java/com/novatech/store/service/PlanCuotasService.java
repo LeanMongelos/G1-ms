@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 // Logica de negocio para los planes de cuotas.
+/**
+ * Servicio `PlanCuotasService`: reglas de negocio, transacciones y orquestación de PlanCuotas. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class PlanCuotasService {
 

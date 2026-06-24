@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de planes de cuotas. Todas las rutas empiezan con /planes.
 @RestController
 @RequestMapping("/planes")
+/**
+ * Controlador REST `PlanCuotasController`: expone endpoints HTTP JSON para PlanCuotas. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PlanCuotasController {
 
     private final PlanCuotasService service;

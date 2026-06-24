@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repositorio JPA `ConversacionRepository`: consultas y persistencia de entidad Conversacion en MySQL.
+ */
 public interface ConversacionRepository extends JpaRepository<Conversacion, Integer> {
 
     List<Conversacion> findByCanalIgnoreCase(String canal);

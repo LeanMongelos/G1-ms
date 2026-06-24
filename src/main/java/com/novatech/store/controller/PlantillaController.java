@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/config/plantillas")
+/**
+ * Controlador REST `PlantillaController`: expone endpoints HTTP JSON para Plantilla. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PlantillaController {
 
     private final PlantillaService service;

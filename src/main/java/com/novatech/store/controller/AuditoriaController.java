@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/configuracion")
+/**
+ * Controlador REST `AuditoriaController`: expone endpoints HTTP JSON para Auditoria. Ruta base en `@RequestMapping` de la clase.
+ */
 public class AuditoriaController {
 
     private final RegistroAuditoriaRepository auditoriaRepository;

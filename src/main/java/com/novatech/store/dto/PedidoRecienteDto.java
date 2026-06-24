@@ -3,6 +3,9 @@ package com.novatech.store.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * DTO `PedidoRecienteDto`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class PedidoRecienteDto {
 
     private Integer idPedido;

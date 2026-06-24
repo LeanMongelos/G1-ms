@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/configuracion")
+/**
+ * Controlador REST `ConfiguracionController`: expone endpoints HTTP JSON para Configuracion. Ruta base en `@RequestMapping` de la clase.
+ */
 public class ConfiguracionController {
 
     private final ConfiguracionService service;

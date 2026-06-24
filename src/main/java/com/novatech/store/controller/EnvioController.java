@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de envios. Todas las rutas empiezan con /envios.
 @RestController
 @RequestMapping("/envios")
+/**
+ * Controlador REST `EnvioController`: expone endpoints HTTP JSON para Envio. Ruta base en `@RequestMapping` de la clase.
+ */
 public class EnvioController {
 
     private final EnvioService service;

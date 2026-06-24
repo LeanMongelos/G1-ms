@@ -11,6 +11,9 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para los productos.
+/**
+ * Servicio `ProductoService`: reglas de negocio, transacciones y orquestación de Producto. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class ProductoService {
 

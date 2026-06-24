@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/promociones")
+/**
+ * Controlador REST `PromocionController`: expone endpoints HTTP JSON para Promocion. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PromocionController {
 
     private final PromocionService service;

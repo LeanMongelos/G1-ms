@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 // Guarda los datos del envio de un pedido.
 @Entity
 @Table(name = "Envio")
+/**
+ * Entidad JPA `Envio`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Envio {
 
     // Identificador unico del envio.

@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 // Logica de negocio para los carritos.
+/**
+ * Servicio `CarritoService`: reglas de negocio, transacciones y orquestación de Carrito. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class CarritoService {
 

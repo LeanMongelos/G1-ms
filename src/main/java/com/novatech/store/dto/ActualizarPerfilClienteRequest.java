@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO `ActualizarPerfilClienteRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public record ActualizarPerfilClienteRequest(
         @Size(max = 200, message = "La direccion no puede superar 200 caracteres.")
         String direccion,

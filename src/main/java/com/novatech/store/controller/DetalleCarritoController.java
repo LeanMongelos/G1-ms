@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de los renglones del carrito. Todas las rutas empiezan con /detalle-carritos.
 @RestController
 @RequestMapping("/detalle-carritos")
+/**
+ * Controlador REST `DetalleCarritoController`: expone endpoints HTTP JSON para DetalleCarrito. Ruta base en `@RequestMapping` de la clase.
+ */
 public class DetalleCarritoController {
 
     private final DetalleCarritoService service;

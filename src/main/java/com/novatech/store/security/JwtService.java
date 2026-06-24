@@ -12,6 +12,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * Seguridad `JwtService`: autenticación JWT, filtros o utilidades de rol/sesión.
+ */
 @Service
 public class JwtService {
 

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * DTO `RemitoRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class RemitoRequest {
 
     @Positive(message = "El id del cliente debe ser positivo.")

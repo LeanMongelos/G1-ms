@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de los renglones del pedido. Todas las rutas empiezan con /detalle-pedidos.
 @RestController
 @RequestMapping("/detalle-pedidos")
+/**
+ * Controlador REST `DetallePedidoController`: expone endpoints HTTP JSON para DetallePedido. Ruta base en `@RequestMapping` de la clase.
+ */
 public class DetallePedidoController {
 
     private final DetallePedidoService service;

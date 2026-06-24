@@ -4,6 +4,9 @@ import com.novatech.store.entity.IntegracionCanal;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * Repositorio JPA `IntegracionCanalRepository`: consultas y persistencia de entidad IntegracionCanal en MySQL.
+ */
 public interface IntegracionCanalRepository extends JpaRepository<IntegracionCanal, Integer> {
 
     Optional<IntegracionCanal> findByTipoIgnoreCase(String tipo);

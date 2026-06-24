@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
+/**
+ * Controlador REST `AdminController`: expone endpoints HTTP JSON para Admin. Ruta base en `@RequestMapping` de la clase.
+ */
 public class AdminController {
 
     private final AdminService service;

@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `InteraccionCrmService`: reglas de negocio, transacciones y orquestación de InteraccionCrm. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class InteraccionCrmService {
 

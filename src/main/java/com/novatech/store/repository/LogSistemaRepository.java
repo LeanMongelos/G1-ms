@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repositorio JPA `LogSistemaRepository`: consultas y persistencia de entidad LogSistema en MySQL.
+ */
 public interface LogSistemaRepository extends JpaRepository<LogSistema, Integer> {
 
     List<LogSistema> findTop50ByOrderByFechaDesc();

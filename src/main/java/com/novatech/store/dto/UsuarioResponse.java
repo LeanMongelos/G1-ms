@@ -5,6 +5,9 @@ import com.novatech.store.entity.Usuario;
 // DTO que devolvemos al frontend cuando alguien se registra o inicia sesion.
 // Importante: aca NO existe el campo "contrasena", asi nos aseguramos de que la
 // clave (ni siquiera el hash) salga nunca en las respuestas del login/registro.
+/**
+ * DTO `UsuarioResponse`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public record UsuarioResponse(
         Integer idUsuario,
         String nombre,

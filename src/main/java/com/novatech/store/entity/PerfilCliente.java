@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 // Perfil CRM del cliente (ficha 360°). Vinculado a Usuario de la tienda.
 @Entity
 @Table(name = "PerfilCliente")
+/**
+ * Entidad JPA `PerfilCliente`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class PerfilCliente {
 
     @Id

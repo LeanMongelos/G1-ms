@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 // Es cada renglon de un carrito: que producto y que cantidad se agrego.
 @Entity
 @Table(name = "DetalleCarrito")
+/**
+ * Entidad JPA `DetalleCarrito`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class DetalleCarrito {
 
     // Identificador unico del renglon del carrito.

@@ -18,6 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * Seguridad `JwtAuthFilter`: autenticación JWT, filtros o utilidades de rol/sesión.
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 

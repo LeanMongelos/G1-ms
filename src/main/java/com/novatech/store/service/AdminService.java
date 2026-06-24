@@ -29,6 +29,9 @@ import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `AdminService`: reglas de negocio, transacciones y orquestación de Admin. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class AdminService {
 

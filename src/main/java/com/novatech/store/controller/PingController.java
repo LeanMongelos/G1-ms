@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 // El frontend puede llamarlo para verificar que se puede conectar.
 @RestController
 @RequestMapping("/ping")
+/**
+ * Controlador REST `PingController`: expone endpoints HTTP JSON para Ping. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PingController {
 
     // GET /ping -> devuelve un JSON simple con el estado y la hora actual.

@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 // Guarda la informacion de un pago hecho para un pedido.
 @Entity
 @Table(name = "Pago")
+/**
+ * Entidad JPA `Pago`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Pago {
 
     // Identificador unico del pago.

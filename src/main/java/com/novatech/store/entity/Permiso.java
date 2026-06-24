@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Permiso")
+/**
+ * Entidad JPA `Permiso`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Permiso {
 
     @Id

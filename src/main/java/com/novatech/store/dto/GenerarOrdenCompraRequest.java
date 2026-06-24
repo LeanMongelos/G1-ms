@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 
+/**
+ * DTO `GenerarOrdenCompraRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class GenerarOrdenCompraRequest {
 
     @NotEmpty(message = "Debe indicar al menos un producto.")

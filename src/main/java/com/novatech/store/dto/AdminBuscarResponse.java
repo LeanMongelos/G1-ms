@@ -3,6 +3,9 @@ package com.novatech.store.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO `AdminBuscarResponse`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class AdminBuscarResponse {
 
     private List<AdminBuscarItemDto> clientes = new ArrayList<>();

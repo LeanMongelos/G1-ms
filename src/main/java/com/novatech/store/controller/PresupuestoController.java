@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/presupuestos")
+/**
+ * Controlador REST `PresupuestoController`: expone endpoints HTTP JSON para Presupuesto. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PresupuestoController {
 
     private final PresupuestoService service;

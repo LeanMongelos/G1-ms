@@ -12,6 +12,9 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * DTO `ConfirmarOrdenRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public class ConfirmarOrdenRequest {
 
     @NotNull(message = "El id del usuario es obligatorio.")

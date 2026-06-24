@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Promocion")
+/**
+ * Entidad JPA `Promocion`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Promocion {
 
     @Id

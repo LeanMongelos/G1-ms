@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de resenas. Todas las rutas empiezan con /resenas.
 @RestController
 @RequestMapping("/resenas")
+/**
+ * Controlador REST `ResenaController`: expone endpoints HTTP JSON para Resena. Ruta base en `@RequestMapping` de la clase.
+ */
 public class ResenaController {
 
     private final ResenaService service;

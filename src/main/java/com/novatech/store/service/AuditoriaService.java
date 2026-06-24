@@ -5,6 +5,9 @@ import com.novatech.store.repository.RegistroAuditoriaRepository;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `AuditoriaService`: reglas de negocio, transacciones y orquestación de Auditoria. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class AuditoriaService {
 

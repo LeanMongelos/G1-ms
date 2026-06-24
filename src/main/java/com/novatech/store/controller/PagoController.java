@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 // Controller de pagos. Todas las rutas empiezan con /pagos.
 @RestController
 @RequestMapping("/pagos")
+/**
+ * Controlador REST `PagoController`: expone endpoints HTTP JSON para Pago. Ruta base en `@RequestMapping` de la clase.
+ */
 public class PagoController {
 
     private final PagoService service;

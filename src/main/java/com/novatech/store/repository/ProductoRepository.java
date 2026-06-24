@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 // Repositorio de Producto. Ademas de los metodos basicos, agregamos dos busquedas.
+/**
+ * Repositorio JPA `ProductoRepository`: consultas y persistencia de entidad Producto en MySQL.
+ */
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     // Buscar todos los productos de una categoria.

@@ -8,6 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "Remito")
+/**
+ * Entidad JPA `Remito`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Remito {
 
     @Id

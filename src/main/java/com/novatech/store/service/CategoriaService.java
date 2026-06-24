@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 // @Service le dice a Spring que esta clase tiene la "logica de negocio".
 // La logica de negocio son las reglas/pasos de la aplicacion.
 // El service usa el repository para hablar con la base de datos.
+/**
+ * Servicio `CategoriaService`: reglas de negocio, transacciones y orquestación de Categoria. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class CategoriaService {
 

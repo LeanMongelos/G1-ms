@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/configuracion/rbac")
+/**
+ * Controlador REST `RbacController`: expone endpoints HTTP JSON para Rbac. Ruta base en `@RequestMapping` de la clase.
+ */
 public class RbacController {
 
     private final RbacService service;

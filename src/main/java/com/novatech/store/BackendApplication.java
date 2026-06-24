@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 // Esta es la clase principal: el punto donde arranca toda la aplicacion.
 // @SpringBootApplication activa la "magia" de Spring Boot:
 // busca los controllers, services y repositorios y los conecta solo.
+/**
+ * Componente backend `BackendApplication` del paquete `BackendApplication.java`.
+ */
 @SpringBootApplication
 @EnableScheduling
 public class BackendApplication {

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/facturas")
+/**
+ * Controlador REST `FacturaController`: expone endpoints HTTP JSON para Factura. Ruta base en `@RequestMapping` de la clase.
+ */
 public class FacturaController {
 
     private final FacturaService service;

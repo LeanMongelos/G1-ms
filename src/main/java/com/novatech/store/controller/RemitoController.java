@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/remitos")
+/**
+ * Controlador REST `RemitoController`: expone endpoints HTTP JSON para Remito. Ruta base en `@RequestMapping` de la clase.
+ */
 public class RemitoController {
 
     private final RemitoService service;

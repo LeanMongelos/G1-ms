@@ -10,6 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "Presupuesto")
+/**
+ * Entidad JPA `Presupuesto`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class Presupuesto {
 
     @Id

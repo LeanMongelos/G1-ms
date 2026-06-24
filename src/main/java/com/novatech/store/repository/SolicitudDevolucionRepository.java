@@ -4,6 +4,9 @@ import com.novatech.store.entity.SolicitudDevolucion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+/**
+ * Repositorio JPA `SolicitudDevolucionRepository`: consultas y persistencia de entidad SolicitudDevolucion en MySQL.
+ */
 public interface SolicitudDevolucionRepository extends JpaRepository<SolicitudDevolucion, Integer> {
 
     List<SolicitudDevolucion> findByCliente_Usuario_IdUsuarioOrderByFechaCreacionDesc(Integer idUsuario);

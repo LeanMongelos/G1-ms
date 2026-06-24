@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `ClienteMetricasService`: reglas de negocio, transacciones y orquestación de ClienteMetricas. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class ClienteMetricasService {
 

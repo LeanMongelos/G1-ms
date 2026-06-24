@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO `LoginRequest`: objeto de transferencia (entrada/salida) sin mapeo directo 1:1 a tabla.
+ */
 public record LoginRequest(
         @NotBlank(message = "El email es obligatorio.")
         @Email(message = "El email no tiene un formato valido.")

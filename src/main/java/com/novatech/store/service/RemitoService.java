@@ -23,6 +23,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Servicio `RemitoService`: reglas de negocio, transacciones y orquestación de Remito. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class RemitoService {
 

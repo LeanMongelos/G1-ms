@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 // Es cada renglon de un pedido: que producto, que cantidad y a que precio se compro.
 @Entity
 @Table(name = "DetallePedido")
+/**
+ * Entidad JPA `DetallePedido`: tabla y relaciones ORM; se serializa a JSON en respuestas API.
+ */
 public class DetallePedido {
 
     // Identificador unico del renglon del pedido.

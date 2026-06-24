@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 // @RequestMapping = todas las rutas de esta clase empiezan con /categorias.
 @RequestMapping("/categorias")
+/**
+ * Controlador REST `CategoriaController`: expone endpoints HTTP JSON para Categoria. Ruta base en `@RequestMapping` de la clase.
+ */
 public class CategoriaController {
 
     // El controller usa el service para hacer el trabajo.

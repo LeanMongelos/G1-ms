@@ -3,6 +3,9 @@ package com.novatech.store.service;
 import com.novatech.store.dto.CrmResumenResponse;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio `CrmService`: reglas de negocio, transacciones y orquestación de Crm. Los controllers delegan aquí; no accede HTTP directamente.
+ */
 @Service
 public class CrmService {
 
